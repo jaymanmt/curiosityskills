@@ -2,4 +2,15 @@
 
 CREATE USER 'admini'@'localhost' IDENTIFIED BY '71f08h3fnduweyg7';  
 
-GRANT ALL PRIVILEGES ON *.* TO 'admini'@'localhost' WITH GRANT OPTION;
+comments - last inserted ID. or extract latest inserted id then use it in your script to display the latest comments on top. 
+
+PHP MYADMIN SQL TESTINGS:
+
+### target comments 
+SELECT comments.comment FROM comments
+INNER JOIN client_exp_comment ON comments.id = client_exp_comment.comments_fk
+INNER JOIN client_exp ON client_exp.id = client_exp_comment.client_exp_fk
+
+--> the above returns two results. unsure why. 
+
+### retrieve work type
