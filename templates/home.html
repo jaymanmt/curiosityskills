@@ -1,3 +1,28 @@
 {%extends "index.template.html"%} {%block content%}
-test
+<a href="/create-workprofile" class = "btn btn-primary row">Share your work experiences with us</a>
+<section class="row"style = "background-image: url('static/images/hero-image.jpg'); background-size: cover;">
+    <div class= "col-4"></div>
+    <form method='POST' style="background-color: rgba(0,0,0,0.4); padding: 10px; margin-top: 100px; margin-bottom: 100px; color: white" class="col-4">
+    <h5>Work Profiles:</h5>
+    <div class="form-group">
+        <select class="form-control" name="job_categories">
+        {%for j in job_categories%}
+      <option>{{j}}</option>
+        {%endfor%}
+        </select>
+    </div>
+    <h5>Types of Experiences</h5>
+    <div class="form-group">
+        <input type="radio" name="experience_type" value="all_exp" checked>
+        <label>All Experiences</label><br>
+        <input type="radio" name="experience_type" value="client_exp">
+        <label>Client Experiences</label><br>
+        <input type="radio" name="experience_type" value="edu_exp">
+        <label>Education Experiences</label><br>
+        <input type="radio" name="experience_type" value="salary_only">
+        <label>Salary Comparisons only</label>
+    </div>
+    <button type="submit" value="create" class="btn btn-primary">Create</button>
+</form>
+</section>
 {%endblock%}

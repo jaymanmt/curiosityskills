@@ -12,7 +12,7 @@ job_levels = ["Intern", "Junior-Level", "Entry-Level", "Intermediate", "First-le
 
 @app.route('/')
 def home():
-    return render_template("home.html", job_categories = job_categories, job_levels = job_levels)
+    return render_template("home.html", job_categories = job_categories)
 
 
 if __name__ == '__main__':
