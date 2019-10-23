@@ -1,0 +1,5 @@
+71f08h3fnduweyg7
+
+CREATE USER 'admini'@'localhost' IDENTIFIED BY '71f08h3fnduweyg7';  
+
+GRANT ALL PRIVILEGES ON *.* TO 'admini'@'localhost' WITH GRANT OPTION;
