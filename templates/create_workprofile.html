@@ -1,10 +1,10 @@
 {%extends "index.template.html"%} {%block content%}
-<form method='GET' style="width: 500px; background-color: lightcoral; padding: 10px;">
+<form method='POST' style="width: 500px; background-color: lightcoral; padding: 10px;">
     <div class="form-group">
         <label for="type">Work Profiles:</label>
         <select class="form-control" name="job_categories">
         {%for j in job_categories%}
-      <option>{{j}}</option>
+      <option>{{j["id"]}}. {{j["category"]}}</option>
         {%endfor%}
         </select>
     </div>
@@ -12,7 +12,7 @@
         <label for="type">Job-Level:</label>
         <select class="form-control" name="job_level">
         {%for jl in job_levels%}
-      <option>{{jl}}</option>
+      <option>{{jl["id"]}}. {{jl["level"]}}</option>
         {%endfor%}
         </select>
     </div>
@@ -22,7 +22,7 @@
     </div>
     <div>
         <label for="exampleFormControlInput1">Date:</label>
-        <input class="form-control" type="date" name="record_created_on">
+        <input class="form-control" type="date" name="date_created">
     </div>
     
     <button type="submit" value="create" class="btn btn-primary">Create</button>

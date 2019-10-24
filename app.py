@@ -22,12 +22,6 @@ def home():
     cursor.execute(sql)
     job_categories = cursor.fetchall()
     
-    sql="""
-    SELECT * FROM job_level_list
-    """
-    cursor.execute(sql)
-    job_levels = cursor.fetchall()
-    
     return render_template("home.html", job_categories = job_categories)
 
 ## redirecting form depending on user selections on work-category and type of work experiences
@@ -84,15 +78,42 @@ def showall(job_category_id):
 def showcreateprofile():
     connection = connect()
     cursor = connection.cursor(pymysql.cursors.DictCursor)
-    sql= """
-    SELECT * FROM 
+    sql="""
+    SELECT * FROM job_category_list
     """
-    return render_template("create_workprofile.html")
+    cursor.execute(sql)
+    job_categories = cursor.fetchall()
     
-## route for posting to create work profile  
+    sql="""
+    SELECT * FROM job_level_list
+    """
+    
+    cursor.execute(sql)
+    job_levels = cursor.fetchall()
+    
+    return render_template("create_workprofile.html", job_categories = job_categories, job_levels = job_levels)
+    
+# route for posting to create work profile  
 @app.route('/create-workprofile', methods=["POST"])
 def createprofile():
+    job_categories = request.form.get("job_categories")
+    job_categories_id = job_categories[0]
+    job_level = request.form.get("job_level")
+    job_level_id = job_level[0]
+    salary = request.form.get("salary")
+    date = request.form.get("date_created")
+    date_format = date.replace("-", "")
     
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    sql="""
+    INSERT INTO work_exp (job_category, job_level, salary, date) VALUES ({},{},{},{})
+    """.format(job_categories_id, job_level_id, salary, date_format)
+    print(sql)
+    cursor.execute(sql)
+    connection.commit()
+    
+    return render_template("choose_exp.html")
 
 if __name__ == '__main__':
    app.run(host=os.environ.get('IP'),
