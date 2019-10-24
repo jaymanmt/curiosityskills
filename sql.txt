@@ -13,4 +13,13 @@ INNER JOIN client_exp ON client_exp.id = client_exp_comment.client_exp_fk
 
 --> the above returns two results. unsure why. 
 
-### retrieve work type
+### retrieve all experiences by both:
+
+SELECT * FROM work_exp
+INNER JOIN client_exp ON work_exp.id = client_exp.id 
+WHERE work_exp.job_category = "Arts, Audio/Video Technology and Communications"
+
+SELECT * FROM work_exp
+INNER JOIN client_exp ON work_exp.id = client_exp.id
+INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
+WHERE work_exp.job_category = 2

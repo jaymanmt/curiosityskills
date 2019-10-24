@@ -7,7 +7,7 @@
     <div class="form-group">
         <select class="form-control" name="job_categories">
         {%for j in job_categories%}
-      <option>{{j}}</option>
+      <option>{{j["id"]}}. {{j['category']}}</option>
         {%endfor%}
         </select>
     </div>
