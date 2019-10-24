@@ -10,12 +10,6 @@ def connect():
     password="71f08h3fnduweyg7",
     database="curiosityskills")
     return connection
-    
-## job categories is to the credit of recruiter.com, refer to readme file for more details
-job_cat = ["Agriculture, Food and Natural Resources", "Architecture and Construction", "Arts, AudioVideo Technology and Communications",  "Business Management and Administration", "Education and Training", "Finance", "Government and Public Administration", "Health Science", "Hospitality and Tourism", "Human Services", "Information Technology", "Law, Public Safety, Corrections and Security", "Manufacturing", "Marketing, Sales and Service", "Science, Technology, Engineering and Mathematics", "Transportation, Distribution and Logistics"]
-
-##referred types of job levels by bizfluent website, refer to readme file for more details
-job_l = ["Intern", "Junior-Level", "Entry-Level", "Intermediate", "First-level Management", "Upper-Management","Top-Level Management"]
 
 ## display home route for basic search
 @app.route('/')
@@ -36,12 +30,13 @@ def home():
     
     return render_template("home.html", job_categories = job_categories)
 
-## redirecting form depending on user selections
+## redirecting form depending on user selections on work-category and type of work experiences
 @app.route('/', methods = ['POST'])
 def homeredirect():
+    experience = request.form.get("experience_type")
     job_category = request.form.get("job_categories")
     job_category_id = job_category[0]
-    experience = request.form.get("experience_type")
+    
     if experience == 'all_exp':
         return redirect("/all-experiences/{}".format(job_category_id))
     elif experience == 'client_exp':
@@ -84,9 +79,20 @@ def showall(job_category_id):
     
     return render_template("all_exp.html", client_results = client_exp_from_chosen_cat, edu_results = edu_exp_from_chosen_cat)
 
-## route for customising client experiences
-# @app.route('/client_exp')
-
+## route for displaying: create work profile
+@app.route('/create-workprofile')
+def showcreateprofile():
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    sql= """
+    SELECT * FROM 
+    """
+    return render_template("create_workprofile.html")
+    
+## route for posting to create work profile  
+@app.route('/create-workprofile', methods=["POST"])
+def createprofile():
+    
 
 if __name__ == '__main__':
    app.run(host=os.environ.get('IP'),
