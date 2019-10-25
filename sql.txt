@@ -19,27 +19,13 @@ SELECT * FROM work_exp
 INNER JOIN client_exp ON work_exp.id = client_exp.id 
 WHERE work_exp.job_category = "Arts, Audio/Video Technology and Communications"
 
-SELECT * FROM work_exp
-INNER JOIN client_exp ON work_exp.id = client_exp.id
+ALTER TABLE work_exp DROP date;
+
+INSERT INTO client_exp(title, details, date, work_fk) VALUES ('testing', 'testing more', 20191010, last_id)
+
+SELECT * FROM client_exp
+INNER JOIN work_exp ON work_exp.id = client_exp.work_fk
 INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
-WHERE work_exp.job_category = 2
-
-##LAST_INSERT_ID()
-
-INSERT INTO age_range (age_group) VALUES ("0-4")
-
-INSERT INTO client_age (client_age) VALUES (id of client_exp just created)
-
-INSERT INTO client_age (age_age) VALUES (id of the age_group just created)
-
-INSERT INTO client_exp (id, title, details, date) VALUES (LAST_INSERT_ID(work_exp), "wonderful client", "we sat down and talked for 30mins about our common interests before moving to the business aspects of things.", 20191010);
-
-
-##retrieve the auto incremented id from database and insert into client_age
-
-
-
-
-SELECT * FROM age_range
-INNER JOIN client_age ON client_age.age_age = age_range.id
-INNER JOIN client_exp ON client_age.client_age = client_exp.id
+INNER JOIN client_age ON client_age.client_age = client_exp.id
+INNER JOIN age_range ON client_age.age_age = age_range.id
+WHERE age_range.age_group LIKE '40-44'
