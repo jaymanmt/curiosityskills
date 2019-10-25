@@ -1,0 +1,54 @@
+{%extends "index.template.html"%} {%block content%}
+<form method='POST' style="width: 700px; background-color: lightcoral; padding: 10px;">
+    
+    <div class="form-group">
+        <label>Education Role:</label>
+        <select class="form-control" name="edu_role">
+            {%for r in edu_role_select%}
+            <option>{{r}}</option>
+            {%endfor%}
+    </div>
+    <div class="form-group">
+        <label>Education Institute Type:</label>
+        <select class="form-control" name="edu_institute">
+            {%for i in edu_institute_select%}
+            <option>{{i}}</option>
+            {%endfor%}
+    </div>
+    <div class="form-group">
+        <label for="type">Age Group:</label>
+        <select class="form-control" name="client_title">
+        {%for a in age_ranges%}
+      <option>{{a["age_range_listings"]}}</option>
+        {%endfor%}
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Education Level:</label>
+        <select class="form-control" name="edu_level">
+            {%for level in edu_level_select%}
+            <option>{{level}}</option>
+            {%endfor%}
+    <div class="form-group">
+        <label>Title:</label>
+        <input type="text" class="form-control" name="edu_exp_title">
+    </div>
+    <div class="form-group">
+        <label>Subject:</label>
+        <select class="form-control" name="edu_subject">
+        {%for t in topic_list%}
+            <option>{{t}}</option>
+        {%endfor%}
+    </div>
+    <div class="form-group">
+        <label>Details:</label>
+        <textarea class="form-control" name="edu_exp_details" rows="15" cols="30"></textarea>
+    </div>
+    <div>
+        <label>Date:</label>
+        <input class="form-control" type="date" name="date_created">
+    </div>
+    
+    <button type="submit" value="create" class="btn btn-primary">Share</button>
+</form>
+{%endblock%}

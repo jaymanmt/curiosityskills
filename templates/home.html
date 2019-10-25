@@ -1,5 +1,6 @@
 {%extends "index.template.html"%} {%block content%}
-<a href="/create-workprofile" class = "btn btn-primary row">Share your work experiences with us</a>
+<a href="/create-client-experience" class = "btn btn-primary row">Share your client experiences with us</a>
+<a href="/create-client-experience" class = "btn btn-primary row">Share your education experiences with us</a>
 <section class="row"style = "background-image: url('static/images/hero-image.jpg'); background-size: cover;">
     <div class= "col-4"></div>
     <form method='POST' style="background-color: rgba(0,0,0,0.4); padding: 10px; margin-top: 100px; margin-bottom: 100px; color: white" class="col-4">
@@ -22,7 +23,7 @@
         <input type="radio" name="experience_type" value="salary_only">
         <label>Salary Comparisons only</label>
     </div>
-    <button type="submit" value="create" class="btn btn-primary">Create</button>
+    <button type="submit" value="create" class="btn btn-primary">Search</button>
 </form>
 </section>
 {%endblock%}

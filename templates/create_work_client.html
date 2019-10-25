@@ -20,8 +20,32 @@
         <label for="exampleFormControlInput1">Monthly Salary in SGD:</label>
         <input type="number" class="form-control" name="salary" min="0", max="200000">
     </div>
+    <div class="form-group">
+        <label for="type">Age Group of your client:</label>
+        <select class="form-control" name="client_age_range">
+        {%for a in age_ranges%}
+      <option>{{a["age_range_listings"]}}</option>
+        {%endfor%}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="type">Gender:</label>
+        <select class="form-control" name="client_gender">
+            {%for g in gender_select%}
+            <option>{{g['gender']}}</option>
+            {%endfor%}
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Title:</label>
+        <input type="text" class="form-control" name="client_exp_title">
+    </div>
+    <div class="form-group">
+        <label>Details:</label>
+        <textarea class="form-control" name="client_exp_details" rows="15" cols="30"></textarea>
+    </div>
     <div>
-        <label for="exampleFormControlInput1">Date:</label>
+        <label>Date:</label>
         <input class="form-control" type="date" name="date_created">
     </div>
     

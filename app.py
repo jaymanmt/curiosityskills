@@ -7,7 +7,7 @@ app = Flask(__name__)
 def connect():
     connection = pymysql.connect(host="localhost",
     user="admini",
-    password="71f08h3fnduweyg7",
+    password=os.environ["MYSQLPW"],
     database="curiosityskills")
     return connection
 
@@ -74,7 +74,7 @@ def showall(job_category_id):
     return render_template("all_exp.html", client_results = client_exp_from_chosen_cat, edu_results = edu_exp_from_chosen_cat)
 
 ## route for displaying: create work profile
-@app.route('/create-workprofile')
+@app.route('/create-client-experience')
 def showcreateprofile():
     connection = connect()
     cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -91,10 +91,22 @@ def showcreateprofile():
     cursor.execute(sql)
     job_levels = cursor.fetchall()
     
-    return render_template("create_workprofile.html", job_categories = job_categories, job_levels = job_levels)
+    sql= """
+    SELECT * FROM age_range_list
+    """
+    cursor.execute(sql)
+    age_ranges = cursor.fetchall()
     
-# route for posting to create work profile  
-@app.route('/create-workprofile', methods=["POST"])
+    sql= """
+    SELECT * FROM gender_list
+    """
+    cursor.execute(sql)
+    gender_select = cursor.fetchall()
+    
+    return render_template("create_work_client.html", job_categories = job_categories, job_levels = job_levels, gender_select = gender_select, age_ranges = age_ranges)
+    
+## route for user to create work profile + client exp on database
+@app.route('/create-client-experience', methods=["POST"])
 def createprofile():
     job_categories = request.form.get("job_categories")
     job_categories_id = job_categories[0]
@@ -111,9 +123,73 @@ def createprofile():
     """.format(job_categories_id, job_level_id, salary, date_format)
     print(sql)
     cursor.execute(sql)
+    
+    last_id = cursor.lastrowid 
+    
     connection.commit()
     
     return render_template("choose_exp.html")
+
+## route to display form for creating client experience
+@app.route('/create-client-experience')
+def display_create_clientexp():
+    ## to add flash message informing user that their entry has been recorded
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    sql= """
+    SELECT * FROM age_range_list
+    """
+    cursor.execute(sql)
+    age_ranges = cursor.fetchall()
+    
+    sql= """
+    SELECT * FROM gender_list
+    """
+    cursor.execute(sql)
+    gender_select = cursor.fetchall()
+    
+    return render_template("create_clientexp.html", age_ranges = age_ranges, gender_select = gender_select)
+
+## route for user to create client experience onto database
+@app.route('/create-client-experience', methods = ['POST'])
+def create_clientexp():
+    title = request.form.get("client_exp_title")
+    age_group = request.form.get("client_age_range")
+    gender = request.form.get("client_gender")
+    details = request.form.get("client_exp_details")
+    date = request.form.get("date_created")
+    date_format = date.replace("-", "")
+    
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    
+    return 'done for client exp'
+    
+## route to display from for creating education experience 
+@app.route("/create-edu-experience")
+def show_create_eduexp():
+    
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    sql= """
+    SELECT * FROM topic_list
+    """
+    cursor.execute(sql)
+    topic_list = cursor.fetchall()
+
+    sql= """
+    SELECT * FROM age_range_list
+    """
+    cursor.execute(sql)
+    age_ranges = cursor.fetchall()
+    
+    return render_template("create_eduexp.html", edu_role_select = edu_role_select, edu_institute_select = edu_institute_select, edu_level_select = edu_level_select, topic_list = topic_list, age_ranges = age_ranges)
+
+
+
+## route for user to create education experience onto database
+
+
 
 if __name__ == '__main__':
    app.run(host=os.environ.get('IP'),
