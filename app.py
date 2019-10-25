@@ -107,6 +107,7 @@ def showcreateprofile():
 ## route for user to create work profile + client exp on database
 @app.route('/create-client-experience', methods=["POST"])
 def createclientexp():
+    ## insert into work-profile portion on database
     job_categories = request.form.get("job_categories")
     job_level = request.form.get("job_level")
     salary = request.form.get("salary")
@@ -133,7 +134,7 @@ def createclientexp():
     cursor.execute(sql)
     last_id_client_exp = cursor.lastrowid
 
-## insert age separately due to separate client_exp and edu_exp tables linking to age_range table
+## insert age separately from the rest due to separate client_exp and edu_exp tables linking to age_range table
     age_group = request.form.get("client_age_range")
     
     sql="""
@@ -208,6 +209,8 @@ def display_create_eduexp():
 ## route for user to create work profile + education exp on database
 @app.route("/create-edu-experience", methods = ['POST'])
 def create_eduexp():
+    
+## insert into work-profile portion on database
     job_categories = request.form.get("job_categories")
     job_categories_id = job_categories[0]
     job_level = request.form.get("job_level")
@@ -219,30 +222,37 @@ def create_eduexp():
     sql="""
     INSERT INTO work_exp (job_category, job_level, salary) VALUES ({},{},{})
     """.format(job_categories_id, job_level_id, salary)
-    print(sql)
+
     cursor.execute(sql)
     
     last_id_work = cursor.lastrowid 
     
     connection.commit()
     
+## insert into rest of edu_exp table
     title = request.form.get("edu_exp_title")
     details = request.form.get("edu_exp_details")
     date = request.form.get("date_created")
     date_format = date.replace("-", "")
+    role = request.form.get('edu_role')
+    institute = request.form.get('edu_institute')
+    edulevel = request.form.get('edu_level')
+    subject = request.form.get('edu_subject')
+    
     sql = """
-    INSERT INTO edu_exp(title, details, date, edu_fk) VALUES ('{}', '{}', {}, {})
-    """.format(title, details, date_format, last_id_work)
+    INSERT INTO edu_exp(title, details, date, work_fk, role_fk, level_fk, topic_fk, institute_fk) VALUES ('{}', '{}', {}, {}, {}, {}, {}, {})
+    """.format(title, details, date_format, last_id_work, role[0], edulevel[0], subject[0], institute[0])
     cursor.execute(sql)
     
     last_id_edu = cursor.lastrowid 
+    
     connection.commit()
     
-    ## upload information from age to client_experience, age_range database and update their foreign key entity
+## insert age separately from the rest due to separate client_exp and edu_exp tables linking to age_range table
     
     age_group = request.form.get('edu_age_range')
     sql="""
-    INSERT INTO age_range(age_group) VALUES ('{}')
+    INSERT INTO age_range_list(age_range_listings) VALUES ('{}')
     """.format(age_group)
     cursor.execute(sql)
     last_id_age_range = cursor.lastrowid
@@ -254,32 +264,6 @@ def create_eduexp():
     cursor.execute(sql)
     connection.commit()
     
-    ## upload information from edu_role, edu_institute, edu_level, edu_subject to respective databases. 
-    role = request.form.get('edu_role')
-    institute = request.form.get('edu_institute')
-    edulevel = request.form.get('edu_level')
-    subject = request.form.get('edu_subject')
-    
-    sql = """
-    INSERT INTO edu_role(role, edu_exp_fk) VALUES ('{}', {})
-    """.format(role, last_id_edu)
-    cursor.execute(sql)
-    
-    sql = """
-    INSERT INTO edu_institute_type (institute_type, edu_exp_fk) VALUES ('{}', {})
-    """.format(institute, last_id_edu)
-    cursor.execute(sql)
-    
-    sql = """
-    INSERT INTO edu_level (edu_level, edu_exp_fk) VALUES ('{}', {})
-    """.format(edulevel[0], last_id_edu)
-    cursor.execute(sql)
-    
-    sql = """
-    INSERT INTO edu_topic (topic, edu_exp_fk) VALUES ('{}', {})
-    """.format(subject, last_id_edu)
-    cursor.execute(sql)
-    connection.commit()
     
     return redirect('/')
 
