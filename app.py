@@ -73,7 +73,7 @@ def showall(job_category_id):
     
     return render_template("all_exp.html", client_results = client_exp_from_chosen_cat, edu_results = edu_exp_from_chosen_cat)
 
-## route for displaying: create work profile
+## route to display form for creating client experience 
 @app.route('/create-client-experience')
 def showcreateprofile():
     connection = connect()
@@ -108,42 +108,36 @@ def showcreateprofile():
 @app.route('/create-client-experience', methods=["POST"])
 def createclientexp():
     job_categories = request.form.get("job_categories")
-    job_categories_id = job_categories[0]
     job_level = request.form.get("job_level")
-    job_level_id = job_level[0]
     salary = request.form.get("salary")
     
     connection = connect()
     cursor = connection.cursor(pymysql.cursors.DictCursor)
     sql="""
     INSERT INTO work_exp (job_category, job_level, salary) VALUES ({},{},{})
-    """.format(job_categories_id, job_level_id, salary)
-    print(sql)
+    """.format(job_categories[0], job_level[0], salary)
+    
     cursor.execute(sql)
     
     last_id_work = cursor.lastrowid 
-    
-    connection.commit()
-    
-    print(last_id_work)
     
     title = request.form.get("client_exp_title")
     details = request.form.get("client_exp_details")
     date = request.form.get("date_created")
     date_format = date.replace("-", "")
-    
-    sql= """
-    INSERT INTO client_exp(title, details, date, work_fk) VALUES ('{}', '{}', {}, {})
-    """.format(title, details, date_format, last_id_work)
-    cursor.execute(sql)
-    last_id_client_exp = cursor.lastrowid
-    connection.commit()
-    
-    age_group = request.form.get("client_age_range")
     gender = request.form.get("client_gender")
     
+    sql= """
+    INSERT INTO client_exp(title, details, date, work_fk, gender_fk) VALUES ('{}', '{}', {}, {}, {})
+    """.format(title, details, date_format, last_id_work, gender[0])
+    cursor.execute(sql)
+    last_id_client_exp = cursor.lastrowid
+
+## insert age separately due to separate client_exp and edu_exp tables linking to age_range table
+    age_group = request.form.get("client_age_range")
+    
     sql="""
-    INSERT INTO age_range(age_group) VALUES ('{}')
+    INSERT INTO age_range_list(age_range_listings) VALUES ('{}')
     """.format(age_group)
     cursor.execute(sql)
     last_id_age_range = cursor.lastrowid
@@ -152,14 +146,16 @@ def createclientexp():
     sql = """
     INSERT INTO client_age(client_age, age_age) VALUES ({},{})
     """.format(last_id_client_exp, last_id_age_range)
+    print(sql)
     cursor.execute(sql)
+    
     connection.commit()
     
     return redirect('/')
     
-## route to display from for creating education experience 
+## route to display form for creating education experience 
 @app.route("/create-edu-experience")
-def create_eduexp():
+def display_create_eduexp():
     
     connection = connect()
     cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -200,7 +196,7 @@ def create_eduexp():
     edu_institute_select = cursor.fetchall()
     
     sql = """
-    SELECT * FROM job_level_list
+    SELECT * FROM edu_level_list
     """
     cursor.execute(sql)
     edu_level_select = cursor.fetchall()
@@ -209,9 +205,83 @@ def create_eduexp():
 
 
 
-## route for user to create education experience onto database
-
-
+## route for user to create work profile + education exp on database
+@app.route("/create-edu-experience", methods = ['POST'])
+def create_eduexp():
+    job_categories = request.form.get("job_categories")
+    job_categories_id = job_categories[0]
+    job_level = request.form.get("job_level")
+    job_level_id = job_level[0]
+    salary = request.form.get("salary")
+    
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    sql="""
+    INSERT INTO work_exp (job_category, job_level, salary) VALUES ({},{},{})
+    """.format(job_categories_id, job_level_id, salary)
+    print(sql)
+    cursor.execute(sql)
+    
+    last_id_work = cursor.lastrowid 
+    
+    connection.commit()
+    
+    title = request.form.get("edu_exp_title")
+    details = request.form.get("edu_exp_details")
+    date = request.form.get("date_created")
+    date_format = date.replace("-", "")
+    sql = """
+    INSERT INTO edu_exp(title, details, date, edu_fk) VALUES ('{}', '{}', {}, {})
+    """.format(title, details, date_format, last_id_work)
+    cursor.execute(sql)
+    
+    last_id_edu = cursor.lastrowid 
+    connection.commit()
+    
+    ## upload information from age to client_experience, age_range database and update their foreign key entity
+    
+    age_group = request.form.get('edu_age_range')
+    sql="""
+    INSERT INTO age_range(age_group) VALUES ('{}')
+    """.format(age_group)
+    cursor.execute(sql)
+    last_id_age_range = cursor.lastrowid
+    
+    sql="""
+    INSERT INTO edu_age(edu_age, age_age) VALUES ({}, {})
+    """.format(last_id_edu, last_id_age_range)
+    
+    cursor.execute(sql)
+    connection.commit()
+    
+    ## upload information from edu_role, edu_institute, edu_level, edu_subject to respective databases. 
+    role = request.form.get('edu_role')
+    institute = request.form.get('edu_institute')
+    edulevel = request.form.get('edu_level')
+    subject = request.form.get('edu_subject')
+    
+    sql = """
+    INSERT INTO edu_role(role, edu_exp_fk) VALUES ('{}', {})
+    """.format(role, last_id_edu)
+    cursor.execute(sql)
+    
+    sql = """
+    INSERT INTO edu_institute_type (institute_type, edu_exp_fk) VALUES ('{}', {})
+    """.format(institute, last_id_edu)
+    cursor.execute(sql)
+    
+    sql = """
+    INSERT INTO edu_level (edu_level, edu_exp_fk) VALUES ('{}', {})
+    """.format(edulevel[0], last_id_edu)
+    cursor.execute(sql)
+    
+    sql = """
+    INSERT INTO edu_topic (topic, edu_exp_fk) VALUES ('{}', {})
+    """.format(subject, last_id_edu)
+    cursor.execute(sql)
+    connection.commit()
+    
+    return redirect('/')
 
 if __name__ == '__main__':
    app.run(host=os.environ.get('IP'),

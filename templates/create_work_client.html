@@ -32,7 +32,7 @@
         <label for="type">Gender:</label>
         <select class="form-control" name="client_gender">
             {%for g in gender_select%}
-            <option>{{g['gender']}}</option>
+            <option>{{g['id']}}. {{g['gender']}}</option>
             {%endfor%}
         </select>
     </div>
