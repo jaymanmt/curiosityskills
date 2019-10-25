@@ -87,7 +87,6 @@ def showcreateprofile():
     sql="""
     SELECT * FROM job_level_list
     """
-    
     cursor.execute(sql)
     job_levels = cursor.fetchall()
     
@@ -170,6 +169,12 @@ def create_eduexp():
     cursor.execute(sql)
     job_categories = cursor.fetchall()
     
+    sql="""
+    SELECT * FROM job_level_list
+    """
+    cursor.execute(sql)
+    job_levels = cursor.fetchall()
+    
     sql= """
     SELECT * FROM age_range_list
     """
@@ -200,7 +205,7 @@ def create_eduexp():
     cursor.execute(sql)
     edu_level_select = cursor.fetchall()
     
-    return render_template("create_work_edu.html", job_categories = job_categories, age_ranges = age_ranges, edu_role_select = edu_role_select, edu_topics = edu_topics, edu_institute_select = edu_institute_select, edu_level_select = edu_level_select)
+    return render_template("create_work_edu.html", job_categories = job_categories, job_levels = job_levels, age_ranges = age_ranges, edu_role_select = edu_role_select, edu_topics = edu_topics, edu_institute_select = edu_institute_select, edu_level_select = edu_level_select)
 
 
 
