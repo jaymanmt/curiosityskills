@@ -49,11 +49,6 @@ def homeredirect():
         
     # elif experience == 'all_exp'
     #     return redirect("/all-experiences/{}/{}".format(job_category[0], job_level[0])
-    # elif experience == 'client_exp':
-    #     return render_template("search_client_exp.html")
-    # elif experience == 'edu_exp':
-    #     return render_template("search_edu_exp.html")
-    # elif experience == 'salary_only':
     #     return render_template('salary_compare.html')
     # else:
     #     return render_template("oops.html")
@@ -65,19 +60,23 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
     cursor = connection.cursor(pymysql.cursors.DictCursor)
     sql="""
     SELECT * FROM work_exp
+    INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
     INNER JOIN client_exp ON work_exp.id = client_exp.work_fk
     INNER JOIN client_age ON client_exp.id = client_age.client_age
     INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
-    """
+    WHERE work_exp.job_category = {}
+    """.format(job_cat_id)
     cursor.execute(sql)
     all_client_exp = cursor.fetchall()
     
     sql ="""
     SELECT * FROM work_exp
+    INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
     INNER JOIN edu_exp ON work_exp.id = edu_exp.work_fk
     INNER JOIN edu_age ON edu_exp.id = edu_age.edu_age
     INNER JOIN age_range_list ON edu_age.age_age = age_range_list.id
-    """
+    WHERE work_exp.job_level = {}
+    """.format(job_level_id)
     cursor.execute(sql)
     all_edu_exp = cursor.fetchall()
     return render_template("all_exp.html", all_client_exp = all_client_exp, all_edu_exp = all_edu_exp)

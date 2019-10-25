@@ -1,33 +1,30 @@
 {%extends 'index.template.html'%}{%block content%}
-<section id="page-one">
-    <div class="list-group" id="myList" role="tablist">
-      <a class="list-group-item list-group-item-action active" data-toggle="list" href="#home" role="tab">Home</a>
-      <a class="list-group-item list-group-item-action" data-toggle="list" href="#profile" role="tab">Profile</a>
-      <a class="list-group-item list-group-item-action" data-toggle="list" href="#messages" role="tab">Messages</a>
-      <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings" role="tab">Settings</a>
+<h1>Page 1</h1>
+<section id="page-one" class = "row">
+    <div class="list-group col-3" id="myList" role="tablist">
+      {%for each_exp in all_client_exp%}
+      <a class="list-group-item list-group-item-action active" data-toggle="list" href="#{{each_exp['id']}}" role="tab">{{each_exp['title']}}</a>
+      {%endfor%}
     </div>
     
-    <div class="tab-content">
-      <div class="tab-pane fade show active" id="home" role="tabpanel">...</div>
-      <div class="tab-pane fade" id="profile" role="tabpanel">...</div>
-      <div class="tab-pane fade" id="messages" role="tabpanel">...</div>
-      <div class="tab-pane fade" id="settings" role="tabpanel">...</div>
+    <div class="tab-content col">
+      {%for each_exp in all_client_exp%}
+      <div class="tab-pane fade show active" id="{{each_exp['id']}}" role="tabpanel">{{each_exp['details']}}</div>
+      {%endfor%}
     </div>
 </section>
-
-<section id="page-two">
-    <div class="list-group" id="myList" role="tablist">
-      <a class="list-group-item list-group-item-action active" data-toggle="list" href="#home2" role="tab">Home</a>
-      <a class="list-group-item list-group-item-action" data-toggle="list" href="#profile2" role="tab">Profile</a>
-      <a class="list-group-item list-group-item-action" data-toggle="list" href="#messages2" role="tab">Messages</a>
-      <a class="list-group-item list-group-item-action" data-toggle="list" href="#settings2" role="tab">Settings</a>
+<h1>Page 2</h1>
+<section id="page-two" class = "row">
+    <div class="list-group col-3" id="myList" role="tablist">
+      {%for each_exp in all_edu_exp%}
+      <a class="list-group-item list-group-item-action active" data-toggle="list" href="#{{each_exp['id']}}" role="tab">{{each_exp['title']}}</a>
+      {%endfor%}
     </div>
     
-    <div class="tab-content">
-      <div class="tab-pane fade show active" id="home2" role="tabpanel">...</div>
-      <div class="tab-pane fade" id="profile2" role="tabpanel">...</div>
-      <div class="tab-pane fade" id="messages2" role="tabpanel">...</div>
-      <div class="tab-pane fade" id="settings2" role="tabpanel">...</div>
+    <div class="tab-content col">
+      {%for each_exp in all_edu_exp%}
+      <div class="tab-pane fade show active" id="{{each_exp['id']}}" role="tabpanel">{{each_exp['details']}}</div>
+      {%endfor%}
     </div>
 </section>
 
