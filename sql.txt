@@ -27,3 +27,7 @@ SELECT * FROM work_exp
 INNER JOIN client_exp ON client_exp.work_fk = work_exp.id
 INNER JOIN client_age ON client_age.client_age = client_exp.id
 INNER JOIN age_range_list ON age_range_list.id = client_age.age_age
+
+SELECT * FROM work_exp
+INNER JOIN edu_exp ON edu_exp.work_fk = work_exp.id
+INNER JOIN edu_role_list ON edu_role_list.id = edu_exp.role_fk

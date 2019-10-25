@@ -22,56 +22,107 @@ def home():
     cursor.execute(sql)
     job_categories = cursor.fetchall()
     
-    return render_template("home.html", job_categories = job_categories)
+    sql="""
+    SELECT * FROM job_level_list
+    """
+    cursor.execute(sql)
+    job_levels = cursor.fetchall()
+    
+    return render_template("home.html", job_categories = job_categories, job_levels = job_levels)
 
 ## redirecting form depending on user selections on work-category and type of work experiences
 @app.route('/', methods = ['POST'])
 def homeredirect():
-    experience = request.form.get("experience_type")
+    job_level = request.form.get("level")
     job_category = request.form.get("job_categories")
-    job_category_id = job_category[0]
+    experience = request.form.get("experience_type")
     
-    if experience == 'all_exp':
-        return redirect("/all-experiences/{}".format(job_category_id))
-    elif experience == 'client_exp':
-        return render_template("search_client_exp.html")
-    elif experience == 'edu_exp':
-        return render_template("search_edu_exp.html")
-    elif experience == 'salary_only':
-        return render_template('salary_compare.html')
+    
+    if experience == 'all_exp' and job_level[0] == '-' and job_category[0] == '-':
+        return redirect('/all-experiences')
+    elif experience == 'all_exp' and job_category[0] == '-':
+        return redirect('/all-experiences/{}/{}'.format('any-category', job_level[0]))
+    elif experience == 'all_exp' and job_level[0] == '-':
+        return redirect('/all-experiences/{}/{}'.format('any-level', job_category[0]))
     else:
-        return render_template("oops.html")
+        return redirect("/{}/{}/{}".format(job_category[0], job_level[0], experience))
+        
+    # elif experience == 'all_exp'
+    #     return redirect("/all-experiences/{}/{}".format(job_category[0], job_level[0])
+    # elif experience == 'client_exp':
+    #     return render_template("search_client_exp.html")
+    # elif experience == 'edu_exp':
+    #     return render_template("search_edu_exp.html")
+    # elif experience == 'salary_only':
+    #     return render_template('salary_compare.html')
+    # else:
+    #     return render_template("oops.html")
 
-## the route if user chose the 'all experiences' option
-@app.route('/all-experiences/<job_category_id>')
-def showall(job_category_id):
-    
+## route: user chose an experience, a job category and a job level
+@app.route('/<job_cat_id>/<job_level_id>/<exp_type>')
+def fullsearch(job_cat_id, job_level_id, exp_type):
     connection = connect()
     cursor = connection.cursor(pymysql.cursors.DictCursor)
-    
-    sql = """
+    sql="""
     SELECT * FROM work_exp
-    INNER JOIN client_exp ON work_exp.id = client_exp.id
-    INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
-    WHERE work_exp.job_category = {}
-    """.format(job_category_id)
+    INNER JOIN client_exp ON work_exp.id = client_exp.work_fk
+    INNER JOIN client_age ON client_exp.id = client_age.client_age
+    INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
+    """
     cursor.execute(sql)
-    client_exp_from_chosen_cat = cursor.fetchall()
-
-    sql = """
-    SELECT * FROM work_exp
-    INNER JOIN edu_exp ON work_exp.id = edu_exp.id
-    INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
-    WHERE work_exp.job_category = {}
-    """.format(job_category_id)
-
-    cursor = connection.cursor(pymysql.cursors.DictCursor)
-    cursor.execute(sql)
-    edu_exp_from_chosen_cat = cursor.fetchall()
-    print(client_exp_from_chosen_cat)
-    print(edu_exp_from_chosen_cat)
+    all_client_exp = cursor.fetchall()
     
-    return render_template("all_exp.html", client_results = client_exp_from_chosen_cat, edu_results = edu_exp_from_chosen_cat)
+    sql ="""
+    SELECT * FROM work_exp
+    INNER JOIN edu_exp ON work_exp.id = edu_exp.work_fk
+    INNER JOIN edu_age ON edu_exp.id = edu_age.edu_age
+    INNER JOIN age_range_list ON edu_age.age_age = age_range_list.id
+    """
+    cursor.execute(sql)
+    all_edu_exp = cursor.fetchall()
+    return render_template("all_exp.html", all_client_exp = all_client_exp, all_edu_exp = all_edu_exp)
+
+## route: user chose all experiences + 'any' for job-category + 'any' for job levels
+@app.route('/all-experiences')
+def show_allexp():
+    return 'show all experiences'
+
+## route: user chose all experiences and a job-level + 'any' for job category
+@app.route('/all-experiences/any-level/<job_category_id>')
+def show_allexp_jobcat(job_category_id):
+    return 'show all experiences + a selected job category'
+
+## route: user chose all experiences and a job-category + 'any' for job levels
+@app.route('/all-experiences/any-category/<job_level_id>')
+def showall_joblevel(job_level_id):
+    return 'show all experiences + a selected job level'
+    
+    # connection = connect()
+    # cursor = connection.cursor(pymysql.cursors.DictCursor)
+    
+    # sql = """
+    # SELECT * FROM work_exp
+    # INNER JOIN client_exp ON work_exp.id = client_exp.id
+    # INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
+    # WHERE work_exp.job_category = {}
+    # """.format(job_category_id)
+    # cursor.execute(sql)
+    # client_exp_from_chosen_cat = cursor.fetchall()
+
+    # sql = """
+    # SELECT * FROM work_exp
+    # INNER JOIN edu_exp ON work_exp.id = edu_exp.id
+    # INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
+    # WHERE work_exp.job_category = {}
+    # """.format(job_category_id)
+
+    # cursor = connection.cursor(pymysql.cursors.DictCursor)
+    # cursor.execute(sql)
+    # edu_exp_from_chosen_cat = cursor.fetchall()
+    # print(client_exp_from_chosen_cat)
+    # print(edu_exp_from_chosen_cat)
+    
+    # return render_template("all_exp.html", client_results = client_exp_from_chosen_cat, edu_results = edu_exp_from_chosen_cat)
 
 ## route to display form for creating client experience 
 @app.route('/create-client-experience')

@@ -4,15 +4,24 @@
 <section class="row"style = "background-image: url('static/images/hero-image.jpg'); background-size: cover;">
     <div class= "col-4"></div>
     <form method='POST' style="background-color: rgba(0,0,0,0.4); padding: 10px; margin-top: 100px; margin-bottom: 100px; color: white" class="col-4">
-    <h5>Work Profiles:</h5>
+    <h5>Work Profile Search:</h5>
     <div class="form-group">
         <select class="form-control" name="job_categories">
+            <option>-Any-</option>
         {%for j in job_categories%}
       <option>{{j["id"]}}. {{j['category']}}</option>
         {%endfor%}
         </select>
     </div>
-    <h5>Types of Experiences</h5>
+    <div class="form-group">
+        <select class="form-control" name="level">
+            <option>-Any-</option>
+        {%for jl in job_levels%}
+      <option>{{jl["id"]}}. {{jl['level']}}</option>
+        {%endfor%}
+        </select>
+    </div>
+    <h5>Types of Experiences:</h5>
     <div class="form-group">
         <input type="radio" name="experience_type" value="all_exp" checked>
         <label>All Experiences</label><br>
@@ -20,7 +29,7 @@
         <label>Client Experiences</label><br>
         <input type="radio" name="experience_type" value="edu_exp">
         <label>Education Experiences</label><br>
-        <input type="radio" name="experience_type" value="salary_only">
+        <input type="radio" name="experience_type" value="salary">
         <label>Salary Comparisons only</label>
     </div>
     <button type="submit" value="create" class="btn btn-primary">Search</button>
