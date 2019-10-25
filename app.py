@@ -164,9 +164,43 @@ def create_eduexp():
     
     connection = connect()
     cursor = connection.cursor(pymysql.cursors.DictCursor)
-
+    sql="""
+    SELECT * FROM job_category_list
+    """
+    cursor.execute(sql)
+    job_categories = cursor.fetchall()
     
-    return render_template("create_work_edu.html")
+    sql= """
+    SELECT * FROM age_range_list
+    """
+    cursor.execute(sql)
+    age_ranges = cursor.fetchall()
+    
+    sql= """
+    SELECT * FROM edu_role_list
+    """
+    cursor.execute(sql)
+    edu_role_select = cursor.fetchall()
+    
+    sql= """
+    SELECT * FROM topic_list
+    """
+    cursor.execute(sql)
+    edu_topics = cursor.fetchall()
+    
+    sql= """
+    SELECT * FROM edu_institute_list
+    """
+    cursor.execute(sql)
+    edu_institute_select = cursor.fetchall()
+    
+    sql = """
+    SELECT * FROM job_level_list
+    """
+    cursor.execute(sql)
+    edu_level_select = cursor.fetchall()
+    
+    return render_template("create_work_edu.html", job_categories = job_categories, age_ranges = age_ranges, edu_role_select = edu_role_select, edu_topics = edu_topics, edu_institute_select = edu_institute_select, edu_level_select = edu_level_select)
 
 
 

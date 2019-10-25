@@ -1,7 +1,7 @@
 {%extends "index.template.html"%} {%block content%}
 <form method='POST' style="width: 500px; background-color: lightcoral; padding: 10px;">
     <div class="form-group">
-        <label for="type">Work Profiles:</label>
+        <label for="type">Your Work category:</label>
         <select class="form-control" name="job_categories">
         {%for j in job_categories%}
       <option>{{j["id"]}}. {{j["category"]}}</option>

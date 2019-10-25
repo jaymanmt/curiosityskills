@@ -1,34 +1,49 @@
 {%extends "index.template.html"%} {%block content%}
 <form method='POST' style="width: 700px; background-color: lightcoral; padding: 10px;">
-    
     <div class="form-group">
-        <label>Education Role:</label>
-        <select class="form-control" name="edu_role">
-            {%for r in edu_role_select%}
-            <option>{{r}}</option>
-            {%endfor%}
+        <label for="type">Your Work category:</label>
+        <select class="form-control" name="job_categories">
+        {%for j in job_categories%}
+      <option>{{j["id"]}}. {{j["category"]}}</option>
+        {%endfor%}
+        </select>
     </div>
     <div class="form-group">
-        <label>Education Institute Type:</label>
-        <select class="form-control" name="edu_institute">
-            {%for i in edu_institute_select%}
-            <option>{{i}}</option>
-            {%endfor%}
+        <label for="exampleFormControlInput1">Monthly Salary in SGD:</label>
+        <input type="number" class="form-control" name="salary" min="0", max="200000">
     </div>
     <div class="form-group">
-        <label for="type">Age Group:</label>
-        <select class="form-control" name="client_title">
+        <label for="type">Age Group of the student:</label>
+        <select class="form-control" name="client_age_range">
         {%for a in age_ranges%}
       <option>{{a["age_range_listings"]}}</option>
         {%endfor%}
         </select>
     </div>
     <div class="form-group">
+        <label>Your Education Role:</label>
+        <select class="form-control" name="edu_role">
+            {%for r in edu_role_select%}
+            <option>{{r['id']}}. {{r['role']}}</option>
+            {%endfor%}
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Education Institute Type:</label>
+        <select class="form-control" name="edu_institute">
+            {%for i in edu_institute_select%}
+            <option>{{i['id']}}. {{i['institute']}}</option>
+            {%endfor%}
+        </select>
+    </div>
+    <div class="form-group">
         <label>Education Level:</label>
         <select class="form-control" name="edu_level">
             {%for level in edu_level_select%}
-            <option>{{level}}</option>
+            <option>{{level['id']}}. {{level['level']}}</option>
             {%endfor%}
+        </select>
+    </div>
     <div class="form-group">
         <label>Title:</label>
         <input type="text" class="form-control" name="edu_exp_title">
@@ -36,9 +51,10 @@
     <div class="form-group">
         <label>Subject:</label>
         <select class="form-control" name="edu_subject">
-        {%for t in topic_list%}
-            <option>{{t}}</option>
+        {%for t in edu_topics%}
+            <option>{{t['id']}}. {{t['topic']}}</option>
         {%endfor%}
+        </select>
     </div>
     <div class="form-group">
         <label>Details:</label>
