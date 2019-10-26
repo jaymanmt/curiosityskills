@@ -12,7 +12,7 @@
     <title>CuriositySkills</title>
 </head>
 <body class = "container-fluid">
-    <nav class=" row navbar navbar-expand-lg navbar-light bg-light">
+    <nav class=" row navbar navbar-expand-lg navbar-dark bg-dark">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -21,15 +21,22 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About us</a>
+                    <a class="nav-link" href="#about">About us</a>
                 </li>
             </ul>
         </div>
     </nav>
     {%block content%}
     {%endblock%}
-    <footer>
+    <footer id = 'about'class= 'bg-dark row' style="color: white; padding: 3em;">
+        <h2><u>About Us</u></h2>
         
+        <p>
+            Everybody faces fascinating work experiences everyday, but these golden stories are locked away due to corporate confidentiality. By removing the identity and context from these stories, we can share all our experiences and learn from one another how we improvised or dealt with different situations! Let's have a good laugh, and improve ourselves at the same time! 
+        </p>
+        <p>
+            The more stories we have the further we go, tell us your experience today!
+        </p>
     </footer>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
