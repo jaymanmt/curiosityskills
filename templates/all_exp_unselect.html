@@ -38,7 +38,7 @@
             <p>Age Range of Client: {{each_exp['age_range_listings']}} years old</p>
         </td>
         <td>
-            <a href = "view-c-exp/{{each_exp['id']}}">view</a>
+            <a href = "/view-c-exp/{{each_exp['id']}}">view</a>
         </td>
             
     </tr>
@@ -68,11 +68,14 @@
             <h6>Salary: SGD{{each_exp['salary']}}</h6>
         </td>
         <td>
-            <p>Client Gender: {{each_exp['gender']}}</p>
-            <p>Age Range of Client: {{each_exp['age_range_listings']}} years old</p>
+            <p>Education Level: {{each_exp['edu_level']}}</p>
+            <p>Institute Type: {{each_exp['institute']}}</p>
+            <p>My Role: {{each_exp['role']}}</p>
+            <p>Age Range of Student: {{each_exp['age_range_listings']}} years old</p>
+            <p>Related Subject: {{each_exp['topic']}}</p>
         </td>
         <td>
-            <a href = "view-e-exp/{{each_exp['id']}}">view</a>
+            <a href = "/view-e-exp/{{each_exp['id']}}">view</a>
         </td>
             
     </tr>

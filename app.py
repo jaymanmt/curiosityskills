@@ -99,7 +99,7 @@ def catexpsearch(job_cat_id):
     WHERE work_exp.job_category = {}
     """.format(job_cat_id)
     cursor.execute(sql)
-    all_c_exp_select = cursor.fetchall()
+    all_c_exp_unselect = cursor.fetchall()
     
     sql="""
     SELECT * FROM work_exp
@@ -115,9 +115,9 @@ def catexpsearch(job_cat_id):
     WHERE work_exp.job_category = {}
     """.format(job_cat_id)
     cursor.execute(sql)
-    all_e_exp_select = cursor.fetchall()
+    all_e_exp_unselect = cursor.fetchall()
     
-    return render_template('job_cat_all_exp.html', all_c_exp_select = all_c_exp_select, all_e_exp_select = all_e_exp_select)
+    return render_template('all_exp_unselect.html', all_c_exp_unselect = all_c_exp_unselect, all_e_exp_unselect = all_e_exp_unselect)
     
 ## route: user did not choose any job category but selected a job level and selected for all exp
 @app.route('/all-experiences/any-category/<job_level_id>')
@@ -135,7 +135,7 @@ def levelexpsearch(job_level_id):
     WHERE work_exp.job_level = {}
     """.format(job_level_id)
     cursor.execute(sql)
-    all_c_exp_select = cursor.fetchall()
+    all_c_exp_unselect = cursor.fetchall()
     
     sql="""
     SELECT * FROM work_exp
@@ -151,8 +151,8 @@ def levelexpsearch(job_level_id):
     WHERE work_exp.job_level = {}
     """.format(job_level_id)
     cursor.execute(sql)
-    all_e_exp_select = cursor.fetchall()
-    return render_template('job_level_all_exp.html', all_c_exp_select = all_c_exp_select, all_e_exp_select = all_e_exp_select)
+    all_e_exp_unselect = cursor.fetchall()
+    return render_template('all_exp_unselect.html', all_c_exp_unselect = all_c_exp_unselect, all_e_exp_unselect = all_e_exp_unselect)
     
 ## route: user chose an experience, a job category and a job level
 @app.route('/<job_cat_id>/<job_level_id>/<exp_type>')
@@ -171,7 +171,7 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
         WHERE work_exp.job_category = {} and work_exp.job_level = {}
         """.format(job_cat_id, job_level_id)
         cursor.execute(sql)
-        all_client_exp = cursor.fetchall()
+        all_c_exp_unselect = cursor.fetchall()
         
         sql="""
         SELECT * FROM work_exp
@@ -187,8 +187,8 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
         WHERE work_exp.job_category = {} and work_exp.job_level = {}
         """.format(job_cat_id, job_level_id)
         cursor.execute(sql)
-        all_edu_exp = cursor.fetchall()
-        return render_template("all_exp_select.html", all_client_exp = all_client_exp, all_edu_exp = all_edu_exp)
+        all_e_exp_unselect = cursor.fetchall()
+        return render_template("all_exp_unselect.html", all_c_exp_unselect = all_c_exp_unselect, all_e_exp_unselect = all_e_exp_unselect)
         
 ## search possbilities for user choosing to compare salary - from dropdown, user choose none, job cat only, job level only, or both
     elif exp_type == 'salary':
