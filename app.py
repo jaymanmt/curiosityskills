@@ -201,8 +201,8 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
             INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
             """
             cursor.execute(sql)
-            all_salary = cursor.fetchall()
-            return render_template("salary_all.html", all_salary = all_salary)
+            salaries = cursor.fetchall()
+            return render_template("salary_all.html", salaries = salaries)
         elif job_level_id == '-':
             connection = connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -213,8 +213,8 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
             WHERE job_category = {}
             """.format(job_cat_id)
             cursor.execute(sql)
-            jobcat_salary = cursor.fetchall()
-            return render_template("salary_job_cat.html", jobcat_salary = jobcat_salary)
+            salaries = cursor.fetchall()
+            return render_template("salary_all.html", salaries = salaries)
         elif job_cat_id == '-':
             connection = connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -225,8 +225,8 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
             WHERE job_level = {}
             """.format(job_level_id)
             cursor.execute(sql)
-            joblevel_salary = cursor.fetchall()
-            return render_template("salary_job_level.html", joblevel_salary = joblevel_salary)
+            salaries = cursor.fetchall()
+            return render_template("salary_all.html", salaries = salaries)
         else:
             connection = connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -237,8 +237,8 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
             WHERE job_category = {} and job_level = {}
             """.format(job_cat_id, job_level_id)
             cursor.execute(sql)
-            salary_select = cursor.fetchall()
-            return render_template('salary_select.html', salary_select = salary_select)
+            salaries = cursor.fetchall()
+            return render_template('salary_all.html', salaries = salaries)
     else:
         return render_template('oops.html')
 
