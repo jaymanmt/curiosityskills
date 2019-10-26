@@ -242,47 +242,46 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
     else:
         return render_template('oops.html')
 
-## route: user chose all experiences + 'any' for job-category + 'any' for job levels
-@app.route('/all-experiences')
-def show_allexp():
-    return 'show all experiences'
-
-## route: user chose all experiences and a job-level + 'any' for job category
-@app.route('/all-experiences/any-level/<job_category_id>')
-def show_allexp_jobcat(job_category_id):
-    return 'show all experiences + a selected job category'
-
-## route: user chose all experiences and a job-category + 'any' for job levels
-@app.route('/all-experiences/any-category/<job_level_id>')
-def showall_joblevel(job_level_id):
-    return 'show all experiences + a selected job level'
+##route where user chose to view details of a specific entry in client experiences
+@app.route('/view-c-exp/<c_exp_id>')
+def show_c_exp(c_exp_id):
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    sql="""
+    SELECT * FROM work_exp
+    INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
+    INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
+    INNER JOIN client_exp ON work_exp.id = client_exp.work_fk
+    INNER JOIN gender_list ON client_exp.gender_fk = gender_list.id
+    INNER JOIN client_age ON client_exp.id = client_age.client_age
+    INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
+    WHERE work_exp.id = {}
+    """.format(c_exp_id)
+    cursor.execute(sql)
+    displayclientexp = cursor.fetchall()
+    return render_template('show_c_exp.html', displayclientexp = displayclientexp)
     
-    # connection = connect()
-    # cursor = connection.cursor(pymysql.cursors.DictCursor)
-    
-    # sql = """
-    # SELECT * FROM work_exp
-    # INNER JOIN client_exp ON work_exp.id = client_exp.id
-    # INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
-    # WHERE work_exp.job_category = {}
-    # """.format(job_category_id)
-    # cursor.execute(sql)
-    # client_exp_from_chosen_cat = cursor.fetchall()
-
-    # sql = """
-    # SELECT * FROM work_exp
-    # INNER JOIN edu_exp ON work_exp.id = edu_exp.id
-    # INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
-    # WHERE work_exp.job_category = {}
-    # """.format(job_category_id)
-
-    # cursor = connection.cursor(pymysql.cursors.DictCursor)
-    # cursor.execute(sql)
-    # edu_exp_from_chosen_cat = cursor.fetchall()
-    # print(client_exp_from_chosen_cat)
-    # print(edu_exp_from_chosen_cat)
-    
-    # return render_template("all_exp.html", client_results = client_exp_from_chosen_cat, edu_results = edu_exp_from_chosen_cat)
+##route where user chose to view details of a specific entry in education experiences
+@app.route('/view-e-exp/<e_exp_id>')
+def show_e_exp(e_exp_id):
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    sql="""
+    SELECT * FROM work_exp
+    INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
+    INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
+    INNER JOIN edu_exp ON work_exp.id = edu_exp.work_fk
+    INNER JOIN edu_age ON edu_exp.id = edu_age.edu_age
+    INNER JOIN age_range_list ON edu_age.age_age = age_range_list.id
+    INNER JOIN edu_role_list ON edu_exp.role_fk = edu_role_list.id
+    INNER JOIN edu_level_list ON edu_exp.level_fk = edu_level_list.id
+    INNER JOIN edu_institute_list ON edu_exp.institute_fk = edu_institute_list.id
+    INNER JOIN topic_list ON edu_exp.topic_fk = topic_list.id
+        WHERE work_exp.id = {}
+    """.format(e_exp_id)
+    cursor.execute(sql)
+    displayeduexp = cursor.fetchall()
+    return render_template('show_e_exp.html', displayeduexp = displayeduexp)
 
 ## route to display form for creating client experience 
 @app.route('/create-client-experience')

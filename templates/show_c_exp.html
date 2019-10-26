@@ -1,0 +1,28 @@
+{%extends 'index.template.html'%}{%block content%}
+
+<table style = "margin:6em;"class = 'table col-10'>
+    <tr>
+        <td>
+            <h2>Author's Work Profile:</h2>
+            <h5><u>{{displayclientexp[0]['category']}}</u></h5>
+            <h5>{{displayclientexp[0]['level']}}</h5>
+            <h6>Salary: SGD{{displayclientexp[0]['salary']}}</h6>
+            <hr>
+            <h2>Background:</h2>
+            <p>Client Gender: {{displayclientexp[0]['gender']}}</p>
+            <p>Age Range of Client: {{displayclientexp[0]['age_range_listings']}} years old</p>
+        </td>
+        <td>
+            <h2><u>{{displayclientexp[0]['title']}}</u></h2>
+            <h5>{{displayclientexp[0]['date']}}</h5>
+            <p>{{displayclientexp[0]['details']}}</p>
+        </td>
+    </tr
+    <tr>
+        <td>
+        </td>
+    </tr>
+    
+</table>
+
+{%endblock%}
