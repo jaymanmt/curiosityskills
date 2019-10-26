@@ -126,15 +126,33 @@ def levelexpsearch(job_level_id):
     cursor = connection.cursor(pymysql.cursors.DictCursor)
     sql="""
     SELECT * FROM work_exp
+    INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
     INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
     INNER JOIN client_exp ON work_exp.id = client_exp.work_fk
+    INNER JOIN gender_list ON client_exp.gender_fk = gender_list.id
     INNER JOIN client_age ON client_exp.id = client_age.client_age
     INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
     WHERE work_exp.job_level = {}
     """.format(job_level_id)
     cursor.execute(sql)
-    job_level_select = cursor.fetchall()
-    return render_template('job_level_all_exp.html', job_level_select = job_level_select)
+    all_c_exp_select = cursor.fetchall()
+    
+    sql="""
+    SELECT * FROM work_exp
+    INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
+    INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
+    INNER JOIN edu_exp ON work_exp.id = edu_exp.work_fk
+    INNER JOIN edu_age ON edu_exp.id = edu_age.edu_age
+    INNER JOIN age_range_list ON edu_age.age_age = age_range_list.id
+    INNER JOIN edu_role_list ON edu_exp.role_fk = edu_role_list.id
+    INNER JOIN edu_level_list ON edu_exp.level_fk = edu_level_list.id
+    INNER JOIN edu_institute_list ON edu_exp.institute_fk = edu_institute_list.id
+    INNER JOIN topic_list ON edu_exp.topic_fk = topic_list.id
+    WHERE work_exp.job_level = {}
+    """.format(job_level_id)
+    cursor.execute(sql)
+    all_e_exp_select = cursor.fetchall()
+    return render_template('job_level_all_exp.html', all_c_exp_select = all_c_exp_select, all_e_exp_select = all_e_exp_select)
     
 ## route: user chose an experience, a job category and a job level
 @app.route('/<job_cat_id>/<job_level_id>/<exp_type>')
@@ -144,26 +162,34 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
         cursor = connection.cursor(pymysql.cursors.DictCursor)
         sql="""
         SELECT * FROM work_exp
+        INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
         INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
         INNER JOIN client_exp ON work_exp.id = client_exp.work_fk
+        INNER JOIN gender_list ON client_exp.gender_fk = gender_list.id
         INNER JOIN client_age ON client_exp.id = client_age.client_age
         INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
-        WHERE work_exp.job_category = {}
-        """.format(job_cat_id)
+        WHERE work_exp.job_category = {} and work_exp.job_level = {}
+        """.format(job_cat_id, job_level_id)
         cursor.execute(sql)
         all_client_exp = cursor.fetchall()
         
-        sql ="""
+        sql="""
         SELECT * FROM work_exp
         INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
+        INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
         INNER JOIN edu_exp ON work_exp.id = edu_exp.work_fk
         INNER JOIN edu_age ON edu_exp.id = edu_age.edu_age
         INNER JOIN age_range_list ON edu_age.age_age = age_range_list.id
-        WHERE work_exp.job_level = {}
-        """.format(job_level_id)
+        INNER JOIN edu_role_list ON edu_exp.role_fk = edu_role_list.id
+        INNER JOIN edu_level_list ON edu_exp.level_fk = edu_level_list.id
+        INNER JOIN edu_institute_list ON edu_exp.institute_fk = edu_institute_list.id
+        INNER JOIN topic_list ON edu_exp.topic_fk = topic_list.id
+        WHERE work_exp.job_category = {} and work_exp.job_level = {}
+        """.format(job_cat_id, job_level_id)
         cursor.execute(sql)
         all_edu_exp = cursor.fetchall()
         return render_template("all_exp_select.html", all_client_exp = all_client_exp, all_edu_exp = all_edu_exp)
+        
     elif exp_type == 'salary':
         if job_level_id == '-' and job_cat_id == '-':
             connection = connect()
