@@ -1,54 +1,56 @@
 {%extends "index.template.html"%} {%block content%}
-<form method='POST' style="width: 500px; background-color: lightcoral; padding: 10px;">
-    <div class="form-group">
-        <label for="type">Your Work category:</label>
-        <select class="form-control" name="job_categories">
-        {%for j in job_categories%}
-      <option>{{j["id"]}}. {{j["category"]}}</option>
-        {%endfor%}
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="type">Your Job-Level:</label>
-        <select class="form-control" name="job_level">
-        {%for jl in job_levels%}
-      <option>{{jl["id"]}}. {{jl["level"]}}</option>
-        {%endfor%}
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="exampleFormControlInput1">Monthly Salary in SGD:</label>
-        <input type="number" class="form-control" name="salary" min="0", max="200000">
-    </div>
-    <div class="form-group">
-        <label for="type">Age Group of your client:</label>
-        <select class="form-control" name="client_age_range">
-        {%for a in age_ranges%}
-      <option>{{a["age_range_listings"]}}</option>
-        {%endfor%}
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="type">Gender:</label>
-        <select class="form-control" name="client_gender">
-            {%for g in gender_select%}
-            <option>{{g['id']}}. {{g['gender']}}</option>
+<div class = 'row' style = "background-image: url('static/images/hero-image.jpg'); background-size: cover; background-position: top; background-attachment: fixed">
+    <div class = "col-2"></div>
+    <form class = "col-8" method='POST' style="border-radius: 5px; color: white; background-color: rgba(0,0,0,0.4);padding: 10px; margin-top: 1em; margin-bottom: 1em">
+        <div class="form-group">
+            <label for="type">Your Work category:</label>
+            <select class="form-control" name="job_categories">
+            {%for j in job_categories%}
+          <option>{{j["id"]}}. {{j["category"]}}</option>
             {%endfor%}
-        </select>
-    </div>
-    <div class="form-group">
-        <label>Title of your Experience:</label>
-        <input type="text" class="form-control" name="client_exp_title">
-    </div>
-    <div class="form-group">
-        <label>Details:</label>
-        <textarea class="form-control" name="client_exp_details" rows="15" cols="30"></textarea>
-    </div>
-    <div>
-        <label>Date:</label>
-        <input class="form-control" type="date" name="date_created">
-    </div>
-    
-    <button type="submit" value="create" class="btn btn-primary">Create</button>
-</form>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="type">Your Job-Level:</label>
+            <select class="form-control" name="job_level">
+            {%for jl in job_levels%}
+          <option>{{jl["id"]}}. {{jl["level"]}}</option>
+            {%endfor%}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Monthly Salary in SGD:</label>
+            <input type="number" class="form-control" name="salary" min="0", max="200000">
+        </div>
+        <div class="form-group">
+            <label for="type">Age Group of your client:</label>
+            <select class="form-control" name="client_age_range">
+            {%for a in age_ranges%}
+          <option>{{a["age_range_listings"]}}</option>
+            {%endfor%}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="type">Gender:</label>
+            <select class="form-control" name="client_gender">
+                {%for g in gender_select%}
+                <option>{{g['id']}}. {{g['gender']}}</option>
+                {%endfor%}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Title of your Experience:</label>
+            <input type="text" class="form-control" name="client_exp_title">
+        </div>
+        <div class="form-group">
+            <label>Details:</label>
+            <textarea class="form-control" name="client_exp_details" rows="15" cols="30"></textarea>
+        </div>
+        <div>
+            <label>Date:</label>
+            <input class="form-control" type="date" name="date_created">
+        </div></br>
+        <button type="submit" value="create" class="btn btn-primary">Create</button>
+    </form>
+</div>
 {%endblock%}
