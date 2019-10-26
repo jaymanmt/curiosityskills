@@ -339,7 +339,7 @@ def createclientexp():
     gender = request.form.get("client_gender")
     
     sql= """
-    INSERT INTO client_exp(title, details, date, work_fk, gender_fk) VALUES ('{}', '{}', {}, {}, {})
+    INSERT INTO client_exp(title, details, date, work_fk, gender_fk) VALUES ("{}", "{}", {}, {}, {})
     """.format(title, details, date_format, last_id_work, gender[0])
     cursor.execute(sql)
     last_id_client_exp = cursor.lastrowid
@@ -348,7 +348,7 @@ def createclientexp():
     age_group = request.form.get("client_age_range")
     
     sql="""
-    INSERT INTO age_range_list(age_range_listings) VALUES ('{}')
+    INSERT INTO age_range_list(age_range_listings) VALUES ("{}")
     """.format(age_group)
     cursor.execute(sql)
     last_id_age_range = cursor.lastrowid
@@ -450,8 +450,9 @@ def create_eduexp():
     subject = request.form.get('edu_subject')
     
     sql = """
-    INSERT INTO edu_exp(title, details, date, work_fk, role_fk, level_fk, topic_fk, institute_fk) VALUES ('{}', '{}', {}, {}, {}, {}, {}, {})
+    INSERT INTO edu_exp(title, details, date, work_fk, role_fk, level_fk, topic_fk, institute_fk) VALUES ("{}", "{}", {}, {}, {}, {}, {}, {})
     """.format(title, details, date_format, last_id_work, role[0], edulevel[0], subject[0], institute[0])
+    print(sql)
     cursor.execute(sql)
     
     last_id_edu = cursor.lastrowid 
@@ -462,7 +463,7 @@ def create_eduexp():
     
     age_group = request.form.get('edu_age_range')
     sql="""
-    INSERT INTO age_range_list(age_range_listings) VALUES ('{}')
+    INSERT INTO age_range_list(age_range_listings) VALUES ("{}")
     """.format(age_group)
     cursor.execute(sql)
     last_id_age_range = cursor.lastrowid

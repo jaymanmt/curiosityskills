@@ -31,3 +31,7 @@ INNER JOIN age_range_list ON age_range_list.id = client_age.age_age
 SELECT * FROM work_exp
 INNER JOIN edu_exp ON edu_exp.work_fk = work_exp.id
 INNER JOIN edu_role_list ON edu_role_list.id = edu_exp.role_fk
+
+INSERT INTO edu_exp(title, details, date, work_fk, role_fk, level_fk, topic_fk, institute_fk) VALUES ('Teaching students about civil engineering ', 'I was asked to provide a short lecture to high school students as an alumni at my previous high school. It was truly nostalgic to be back after over 4years. I knew that high school students tend to have poor concentration skills, so I added lots of pictures and animations in my presentation and did not limit my Q&A sessions to be just work related. It was also some experiences I had when I was a student at that school. I hope I've inspired several souls today! ', 20191014, 39, 2, 3, 1, 1)
+
+I was asked to provide a short lecture to high school students as an alumni at my previous high school. It was truly nostalgic to be back after over 4years. I knew that high school students tend to have poor concentration skills, so I added lots of pictures and animations in my presentation and did not limit my Q&A sessions to be just work related. It was also some experiences I had when I was a student at that school. I hope I've inspired several souls today! 
