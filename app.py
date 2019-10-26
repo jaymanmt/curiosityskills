@@ -30,14 +30,14 @@ def home():
     
     return render_template("home.html", job_categories = job_categories, job_levels = job_levels)
 
-## redirecting form depending on user selections on work-category and type of work experiences
+## redirecting form depending on possibilties of user search selections on work-category and type of work experiences
 @app.route('/', methods = ['POST'])
 def homeredirect():
     job_level = request.form.get("level")
     job_category = request.form.get("job_categories")
     experience = request.form.get("experience_type")
     
-    
+
     if experience == 'all_exp' and job_level[0] == '-' and job_category[0] == '-':
         return redirect('/all-experiences')
     elif experience == 'all_exp' and job_category[0] == '-':
@@ -53,6 +53,56 @@ def homeredirect():
     # else:
     #     return render_template("oops.html")
 
+## route: user did not choose any job level or job category but selected for all exp
+@app.route('/all-experiences')
+def allexpsearch():
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    sql="""
+    SELECT * FROM work_exp
+    INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
+    INNER JOIN client_exp ON work_exp.id = client_exp.work_fk
+    INNER JOIN client_age ON client_exp.id = client_age.client_age
+    INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
+    """
+    cursor.execute(sql)
+    all_exp_unselect = cursor.fetchall()
+    return render_template('all_exp_unselect.html', all_exp_unselect = all_exp_unselect)
+
+## route: user did not choose any job level but selected a job category and selected for all exp
+@app.route('/all-experiences/any-level/<job_cat_id>')
+def catexpsearch(job_cat_id):
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    sql="""
+    SELECT * FROM work_exp
+    INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
+    INNER JOIN client_exp ON work_exp.id = client_exp.work_fk
+    INNER JOIN client_age ON client_exp.id = client_age.client_age
+    INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
+    WHERE work_exp.job_category = {}
+    """.format(job_cat_id)
+    cursor.execute(sql)
+    job_cat_select = cursor.fetchall()
+    return render_template('job_cat_all_exp.html', job_cat_select = job_cat_select)
+    
+## route: user did not choose any job category but selected a job level and selected for all exp
+@app.route('/all-experiences/any-category/<job_level_id>')
+def levelexpsearch(job_level_id):
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    sql="""
+    SELECT * FROM work_exp
+    INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
+    INNER JOIN client_exp ON work_exp.id = client_exp.work_fk
+    INNER JOIN client_age ON client_exp.id = client_age.client_age
+    INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
+    WHERE work_exp.job_level = {}
+    """.format(job_level_id)
+    cursor.execute(sql)
+    job_level_select = cursor.fetchall()
+    return render_template('job_level_all_exp.html', job_level_select = job_level_select)
+    
 ## route: user chose an experience, a job category and a job level
 @app.route('/<job_cat_id>/<job_level_id>/<exp_type>')
 def fullsearch(job_cat_id, job_level_id, exp_type):
@@ -80,7 +130,7 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
         """.format(job_level_id)
         cursor.execute(sql)
         all_edu_exp = cursor.fetchall()
-        return render_template("all_exp.html", all_client_exp = all_client_exp, all_edu_exp = all_edu_exp)
+        return render_template("all_exp_select.html", all_client_exp = all_client_exp, all_edu_exp = all_edu_exp)
     elif exp_type == 'salary':
         if job_level_id == '-' and job_cat_id == '-':
             connection = connect()
