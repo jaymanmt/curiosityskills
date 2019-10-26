@@ -1,12 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    job_cat_all_exp
-</body>
-</html>
+{%extends 'index.template.html'%}{%block content%}
+<!-- Add single page application with pagination bootstrap -->
+<nav>
+    <ul class = 'pagination'>
+        <li class = 'page-item'>
+            <a data-dest="page-one" class = 'page-link' href="#">Client Experiences</a>
+        </li> 
+        <li class = 'page-item'>
+            <a data-dest="page-two" class = 'page-link' href="#">Education Experiences</a>
+        </li>
+    </ul>
+    
+</nav>
+
+<section id = "page-one" class = "row pages">
+    <div class="list-group col-3" id="myList" role="tablist">
+      {%for each_exp in all_c_exp_select%}
+      <p>{{each_exp}}</p>
+      
+      <a class="list-group-item list-group-item-action active" data-toggle="list" href="#{{each_exp['id']}}" role="tab">
+          
+          <h5><u>{{each_exp['category']}}</u></h5>
+          <h5>{{each_exp['level']}}</h5>
+          <h6>Salary: SGD{{each_exp['salary']}}</h6>
+      </a>
+      {%endfor%}
+    </div>
+    
+    <div class="tab-content col">
+      {%for each_exp in all_c_exp_select%}
+      <div class="tab-pane fade show active" id="{{each_exp['id']}}" role="tabpanel">
+          <h3><u>Background</u></h3>
+          <p>Client Gender: {{each_exp['gender']}}</p>
+          <p>Age Range of Client: {{each_exp['age_range_listings']}} years old</p>
+          <hr>
+          
+          <h2><u>{{each_exp['title']}}</u></h2>
+          <p>{{each_exp['date']}}</p>
+          <p>{{each_exp['details']}}</p>
+          </div>
+      {%endfor%}
+    </div>
+</section>
+<section id="page-two" class = "row pages">
+    <div class="list-group col-3" id="myList" role="tablist">
+      {%for each_exp in all_e_exp_select%}
+      <p>{{each_exp}}</p>
+      
+      <a class="list-group-item list-group-item-action active" data-toggle="list" href="#{{each_exp['id']}}" role="tab">
+          
+          <h5><u>{{each_exp['category']}}</u></h5>
+          <h5>{{each_exp['level']}}</h5>
+          <h6>Salary: SGD{{each_exp['salary']}}</h6>
+      </a>
+      {%endfor%}
+    </div>
+    
+    <div class="tab-content col">
+      {%for each_exp in all_e_exp_select%}
+      <div class="tab-pane fade show active" id="{{each_exp['id']}}" role="tabpanel">
+          <h3><u>Background</u></h3>
+          <p>Education Level: {{each_exp['edu_level']}}</p>
+          <p>Institute Type: {{each_exp['institute']}}</p>
+          <p>My Role: {{each_exp['role']}}</p>
+          <p>Age Range of Student: {{each_exp['age_range_listings']}} years old</p>
+          <p>Related Subject: {{each_exp['topic']}}</p>
+          <hr>
+          <h2><u>{{each_exp['title']}}</u></h2>
+          <p>{{each_exp['date']}}</p>
+          <p>{{each_exp['details']}}</p>
+          </div>
+      {%endfor%}
+    </div>
+</section>
+{%endblock%}
