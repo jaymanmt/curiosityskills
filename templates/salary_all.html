@@ -1,12 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    all salary
-</body>
-</html>
+{%extends 'index.template.html'%}{%block content%}
+
+<table class = "table table-bordered table-dark">
+    <thead>
+        <tr>
+            <th scope="col">
+                Job Category
+            </th>
+            <th scope="col">
+                Job Level
+            </th>
+            <th scope="col">
+                Salary
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for s in all_salary%}
+        <tr>
+            <td>
+                {{s['category']}}
+            </td>
+            <td>
+                {{s['level']}}
+            </td>
+            <td>
+                SGD {{s['salary']}}
+            </td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+
+{%endblock%}

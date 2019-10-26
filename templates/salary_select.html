@@ -1,12 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    selected job level and job category
-</body>
-</html>
+{%extends 'index.template.html'%}{%block content%}
+
+<table class = "table table-bordered table-dark">
+    <thead>
+        <tr>
+            <th>
+                <h2>Job Category: {{salary_select[0]['category']}}</h2>
+                <h4>&</h4>
+                <h2>Job Level: {{salary_select[0]['level']}}</h2>
+            </th>
+        </tr>
+        <tr>
+            <th scope="col">
+                Salary
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for s in salary_select%}
+        <tr>
+            <td>
+                SGD {{s['salary']}}
+            </td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+
+{%endblock%}

@@ -190,12 +190,15 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
         all_edu_exp = cursor.fetchall()
         return render_template("all_exp_select.html", all_client_exp = all_client_exp, all_edu_exp = all_edu_exp)
         
+## search possbilities for user choosing to compare salary - from dropdown, user choose none, job cat only, job level only, or both
     elif exp_type == 'salary':
         if job_level_id == '-' and job_cat_id == '-':
             connection = connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
             sql = """
             SELECT * FROM work_exp
+            INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
+            INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
             """
             cursor.execute(sql)
             all_salary = cursor.fetchall()
@@ -204,7 +207,10 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
             connection = connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
             sql = """
-            SELECT * FROM work_exp WHERE job_category = {}
+            SELECT * FROM work_exp
+            INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
+            INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
+            WHERE job_category = {}
             """.format(job_cat_id)
             cursor.execute(sql)
             jobcat_salary = cursor.fetchall()
@@ -213,13 +219,26 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
             connection = connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
             sql = """
-            SELECT * FROM work_exp WHERE job_category = {}
+            SELECT * FROM work_exp
+            INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
+            INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
+            WHERE job_level = {}
             """.format(job_level_id)
             cursor.execute(sql)
             joblevel_salary = cursor.fetchall()
             return render_template("salary_job_level.html", joblevel_salary = joblevel_salary)
         else:
-            return render_template('salary_select.html')
+            connection = connect()
+            cursor = connection.cursor(pymysql.cursors.DictCursor)
+            sql = """
+            SELECT * FROM work_exp
+            INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
+            INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
+            WHERE job_category = {} and job_level = {}
+            """.format(job_cat_id, job_level_id)
+            cursor.execute(sql)
+            salary_select = cursor.fetchall()
+            return render_template('salary_select.html', salary_select = salary_select)
     else:
         return render_template('oops.html')
 
