@@ -37,15 +37,27 @@ def homeredirect():
     job_category = request.form.get("job_categories")
     experience = request.form.get("experience_type")
     
+    ## if statement within if statement to accommodate for double digit id to be passed into database
 
     if experience == 'all_exp' and job_level[0] == '-' and job_category[0] == '-':
         return redirect('/all-experiences')
     elif experience == 'all_exp' and job_category[0] == '-':
-        return redirect('/all-experiences/{}/{}'.format('any-category', job_level[0]))
+        if job_level[1] == ".":
+            return redirect('/all-experiences/{}/{}'.format('any-category', job_level[0]))
+        else:
+            return redirect('/all-experiences/{}/{}'.format('any-category', job_level[0:2]))
     elif experience == 'all_exp' and job_level[0] == '-':
-        return redirect('/all-experiences/{}/{}'.format('any-level', job_category[0]))
+        if job_category[1] == ".":
+            return redirect('/all-experiences/{}/{}'.format('any-level', job_category[0]))
+        else:
+            return redirect('/all-experiences/{}/{}'.format('any-level', job_category[0:2]))
     else:
-        return redirect("/{}/{}/{}".format(job_category[0], job_level[0], experience))
+        if job_category[1] == "." and job_level[1] == ".":
+            return redirect("/{}/{}/{}".format(job_category[0], job_level[0], experience))
+        elif job_category[1] == ".":
+            return redirect("/{}/{}/{}".format(job_category[0], job_level[0:2], experience))
+        else:
+            return redirect("/{}/{}/{}".format(job_category[0:2], job_level[0], experience))
 
 ## route: user did not choose any job level or job category but selected for all exp
 @app.route('/all-experiences')
@@ -60,7 +72,6 @@ def allexpsearch():
     INNER JOIN gender_list ON client_exp.gender_fk = gender_list.id
     INNER JOIN client_age ON client_exp.id = client_age.client_age
     INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
-    
     """
     cursor.execute(sql)
     all_c_exp_unselect = cursor.fetchall()
@@ -192,6 +203,7 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
         
 ## search possbilities for user choosing to compare salary - from dropdown, user choose none, job cat only, job level only, or both
     elif exp_type == 'salary':
+        ## if statement to accommodate for double digit id to be passed into database
         if job_level_id == '-' and job_cat_id == '-':
             connection = connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -342,7 +354,7 @@ def edit_c_client(c_exp_id):
     date_format = date.replace("-", "")
     gender = request.form.get("client_gender")
     age_group = request.form.get("client_age_range")
-    
+    ## if statement to accommodate for double digit id to be passed into database
     if job_categories[1] == ".":
         connection = connect()
         cursor = connection.cursor(pymysql.cursors.DictCursor)
@@ -368,7 +380,7 @@ def edit_c_client(c_exp_id):
     """.format(title, details, date_format, gender[0], c_exp_id)
     cursor.execute(sql)
     connection.commit()
-    ## if statement to accommodate for double digit id to be passed into database
+
     if age_group[1] == ".":
         sql = """
         UPDATE client_age 
@@ -544,6 +556,35 @@ def delete_c_exp(work_id):
     
     sql="""
     DELETE client_exp FROM client_exp
+    WHERE work_fk = {}
+    """.format(work_id)
+    cursor.execute(sql)
+    connection.commit()
+    
+    sql="""
+    DELETE work_exp FROM work_exp
+    WHERE id = {}
+    """.format(work_id)
+    cursor.execute(sql)
+    connection.commit()
+    
+    return redirect("/")
+
+## delete selected education experiences
+@app.route('/delete-education-exp/<work_id>')
+def delete_e_exp(work_id):
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    sql="""
+    DELETE edu_age FROM edu_exp
+    INNER JOIN edu_age ON edu_exp.id = edu_age.edu_age
+    WHERE edu_exp.work_fk = {}
+    """.format(work_id)
+    cursor.execute(sql)
+    connection.commit()
+    
+    sql="""
+    DELETE edu_exp FROM edu_exp
     WHERE work_fk = {}
     """.format(work_id)
     cursor.execute(sql)
