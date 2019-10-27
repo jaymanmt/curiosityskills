@@ -529,9 +529,34 @@ def edit_e_client(e_exp_id):
 
     return redirect("/view-e-exp/{}".format(e_exp_id))
 
+## delete selected client experiences
 @app.route('/delete-client-exp/<work_id>')
 def delete_c_exp(work_id):
-    return 'deleted'
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    sql="""
+    DELETE client_age FROM client_exp
+    INNER JOIN client_age ON client_exp.id = client_age.client_age
+    WHERE client_exp.work_fk = {}
+    """.format(work_id)
+    cursor.execute(sql)
+    connection.commit()
+    
+    sql="""
+    DELETE client_exp FROM client_exp
+    WHERE work_fk = {}
+    """.format(work_id)
+    cursor.execute(sql)
+    connection.commit()
+    
+    sql="""
+    DELETE work_exp FROM work_exp
+    WHERE id = {}
+    """.format(work_id)
+    cursor.execute(sql)
+    connection.commit()
+    
+    return redirect("/")
 
 
 ## route to display form for creating client experience 

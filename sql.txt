@@ -50,5 +50,26 @@ INNER JOIN client_exp ON client_exp.id = client_age.client_age
 SET client_age.age_age = 1
 WHERE client_exp.work_fk = 42
 
-DELETE FROM table1, table2 FROM table1, table2 WHERE table1.id1 =
-  table2.id2 AND condition
+DELETE FROM departure, departure_time
+USING departure
+INNER JOIN departure_time
+WHERE departure_date = '2016-09-30'
+      AND departure_time.id = departure.id
+      
+DELETE client_age FROM client_exp
+INNER JOIN client_age ON client_exp.id = client_age.client_age
+WHERE client_exp.work_fk = 46
+
+DELETE client_exp FROM client_exp
+WHERE work_fk = 46
+
+SELECT * FROM client_exp
+INNER JOIN client_age ON client_exp.id = client_age.client_age
+WHERE client_exp.work_fk = 46
+
+change to URL for instead of href later 
+{{url_for('delete_task', task_id = task_id)}}
+
+@app.route('/delete-task/<task_id>')
+def delete_task(task_id):
+    
