@@ -1,34 +1,35 @@
 {%extends 'index.template.html'%}{%block content%}
-
-<table class = "table table-bordered table-dark">
-    <thead>
-        <tr>
-            <th scope="col">
-                Job Category
-            </th>
-            <th scope="col">
-                Job Level
-            </th>
-            <th scope="col">
-                Salary
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        {%for s in salaries%}
-        <tr>
-            <td>
-                {{s['category']}}
-            </td>
-            <td>
-                {{s['level']}}
-            </td>
-            <td>
-                SGD {{s['salary']}}
-            </td>
-        </tr>
-        {%endfor%}
-    </tbody>
-</table>
+<section class = "row" style="margin: 1.5em;">
+    <table class = "table table-bordered">
+        <thead style="background-color: #eaeaea">
+            <tr>
+                <th>
+                    Job Category
+                </th>
+                <th>
+                    Job Level
+                </th>
+                <th style = "background-color: #3a405a; color: white;">
+                    Salary
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for s in salaries%}
+            <tr>
+                <td>
+                    {{s['category']}}
+                </td>
+                <td>
+                    {{s['level']}}
+                </td>
+                <td style = "background-color: #3a405a; color: white;">
+                    SGD {{s['salary']}}
+                </td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</section>
 
 {%endblock%}
