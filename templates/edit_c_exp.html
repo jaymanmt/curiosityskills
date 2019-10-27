@@ -1,17 +1,18 @@
 {%extends 'index.template.html'%}{%block content%}
 <div class='row'>
-    <div class = 'col-4' style="padding: 10px; margin-top: 1em; margin-bottom: 1em">
-       <h2>Author's Work Profile:</h2>
-        <h5><u>{{displayclientexp[0]['category']}}</u></h5>
-        <h5>{{displayclientexp[0]['level']}}</h5>
-        <h6>Salary: SGD{{displayclientexp[0]['salary']}}</h6>
+    <div class = 'col-4' style="padding: 10px; background-color: #eaeaea">
+       <h2>My Work Profile:</h2>
+        <p><u>{{displayclientexp[0]['category']}}</u></p>
+        <p>{{displayclientexp[0]['level']}}</p>
+        <p>Salary: SGD {{displayclientexp[0]['salary']}}</p>
         <hr>
         <h2>Background:</h2>
         <p>Client Gender: {{displayclientexp[0]['gender']}}</p>
         <p>Age Range of Client: {{displayclientexp[0]['age_range_listings']}} years old</p>
         <hr>
-        <h2><u>{{displayclientexp[0]['title']}}</u></h2>
-        <h5>{{displayclientexp[0]['date']}}</h5>
+        <h2>My Experience:</h2>
+        <h5><u>{{displayclientexp[0]['title']}}</u></h5>
+        <p>{{displayclientexp[0]['date']}}</p>
         <p>{{displayclientexp[0]['details']}}</p> 
     </div>
     <form class="col-8" method='POST' style="padding: 10px; margin-top: 1em; margin-bottom: 1em">

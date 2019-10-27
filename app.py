@@ -331,7 +331,7 @@ def show_edit_client(c_exp_id):
 
 ## route to submit form for editing client experience
 @app.route('/edit-client-exp/<c_exp_id>', methods = ['POST'])
-def edit_client(c_exp_id):
+def edit_c_client(c_exp_id):
 
     job_categories = request.form.get("job_categories")
     job_level = request.form.get("job_level")
@@ -371,7 +371,47 @@ def edit_client(c_exp_id):
     
     return redirect("/view-c-exp/{}".format(c_exp_id))
     
+## route to submit form for editing client experience
+@app.route('/edit-client-exp/<e_exp_id>', methods = ['POST'])
+def edit_e_client(e_exp_id):
 
+    job_categories = request.form.get("job_categories")
+    job_level = request.form.get("job_level")
+    salary = request.form.get("salary")
+    title = request.form.get("client_exp_title")
+    details = request.form.get("client_exp_details")
+    date = request.form.get("date_created")
+    date_format = date.replace("-", "")
+    gender = request.form.get("client_gender")
+    age_group = request.form.get("client_age_range")
+    
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    sql="""
+    UPDATE work_exp SET job_category = {}, job_level= {}, salary = {}
+    WHERE id = {}
+    """.format(job_categories[0], job_level[0], salary, c_exp_id)
+    cursor.execute(sql)
+    connection.commit()
+    
+    sql="""
+    UPDATE client_exp SET title = "{}", details = "{}", date= {}, gender_fk= {}
+    WHERE work_fk = {}
+    """.format(title, details, date_format, gender[0], c_exp_id)
+    cursor.execute(sql)
+    connection.commit()
+    sql = """
+    UPDATE client_age 
+    INNER JOIN client_exp ON client_exp.id = client_age.client_age
+    SET client_age.age_age = {}
+    WHERE client_exp.work_fk = {}
+    """.format(age_group[0], c_exp_id)
+    print(sql)
+    cursor.execute(sql)
+    
+    connection.commit()
+    
+    return redirect("/view-c-exp/{}".format(c_exp_id))
 
 ## route to display form for creating client experience 
 @app.route('/create-client-experience')

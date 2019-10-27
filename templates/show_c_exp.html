@@ -1,27 +1,30 @@
 {%extends 'index.template.html'%}{%block content%}
-<a href="/edit-client-exp/{{displayclientexp[0]['id']}}" type="button" class="btn btn-outline-info" style = "margin-top: 2em; margin-left: 2em;">Edit</a>
-<a href = "/" type="button" class="btn btn-outline-danger" style = "margin-top: 2em; margin-left: 2em;">Delete</a>
-<table style = "margin:2em;"class = 'table col-10'>
-    <tr>
-        <td>
-            <h2>Author's Work Profile:</h2>
-            <h5><u>{{displayclientexp[0]['category']}}</u></h5>
-            <h5>{{displayclientexp[0]['level']}}</h5>
-            <h6>Salary: SGD{{displayclientexp[0]['salary']}}</h6>
-            <hr>
-            <h2>Background:</h2>
-            <p>Client Gender: {{displayclientexp[0]['gender']}}</p>
-            <p>Age Range of Client: {{displayclientexp[0]['age_range_listings']}} years old</p>
-        </td>
-        <td>
-            <h2><u>{{displayclientexp[0]['title']}}</u></h2>
-            <h5>{{displayclientexp[0]['date']}}</h5>
-            <p>{{displayclientexp[0]['details']}}</p>
-        </td>
-    </tr
-    <tr>
-        <td>
-        </td>
-    </tr>
-</table>
+<div class = "row">
+    <section class = "col-12">
+        <a href="/edit-client-exp/{{displayclientexp[0]['id']}}" type="button" class="btn btn-outline-info" style = "margin-top: 2em; margin-left: 2em;">Edit</a>
+        <a href = "/" type="button" class="btn btn-outline-danger" style = "margin-top: 2em; margin-left: 2em;">Delete</a>
+    </section>
+    <section style = "background-color: #eaeaea; border-radius: 5px; margin: 1.5em;">
+        <table class = 'table'>
+            <tr>
+                <td>
+                    <h2>Author's Work Profile:</h2>
+                    <p><u>{{displayclientexp[0]['category']}}</u></p>
+                    <p>{{displayclientexp[0]['level']}}</p>
+                    <p>Salary: SGD {{displayclientexp[0]['salary']}}</p>
+                    <hr>
+                    <h2>Background:</h2>
+                    <p>Client Gender: {{displayclientexp[0]['gender']}}</p>
+                    <p>Age Range of Client: {{displayclientexp[0]['age_range_listings']}} years old</p>
+                </td>
+                <td>
+                    <h2>My Experience:</h2>
+                    <h5><u>{{displayclientexp[0]['title']}}</u></h5>
+                    <p>{{displayclientexp[0]['date']}}</p>
+                    <p>{{displayclientexp[0]['details']}}</p> 
+                </td>
+            </tr>
+        </table>
+    </section>
+</div>
 {%endblock%}
