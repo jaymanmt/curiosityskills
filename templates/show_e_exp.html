@@ -1,32 +1,33 @@
 {%extends 'index.template.html'%}{%block content%}
-<button type="button" class="btn btn-outline-info" style = "margin-top: 2em; margin-left: 2em;">Edit</button>
-<button type="button" class="btn btn-outline-danger" style = "margin-top: 2em; margin-left: 2em;">Delete</button>
-<table style = "margin:2em;"class = 'table col-10'>
-    <tr>
-        <td>
-            <h2>Author's Work Profile:</h2>
-            <h5><u>{{displayeduexp[0]['category']}}</u></h5>
-            <h5>{{displayeduexp[0]['level']}}</h5>
-            <h6>Salary: SGD{{displayeduexp[0]['salary']}}</h6>
-            <hr>
-            <h2>Background:</h2>
-            <p>Education Level: {{displayeduexp[0]['edu_level']}}</p>
-            <p>Institute Type: {{displayeduexp[0]['institute']}}</p>
-            <p>My Role: {{displayeduexp[0]['role']}}</p>
-            <p>Age Range of Student: {{displayeduexp[0]['age_range_listings']}} years old</p>
-            <p>Related Subject: {{displayeduexp[0]['topic']}}</p>
-        </td>
-        <td>
-            <h2><u>{{displayeduexp[0]['title']}}</u></h2>
-            <h5>{{displayeduexp[0]['date']}}</h5>
-            <p>{{displayeduexp[0]['details']}}</p>
-        </td>
-    </tr
-    <tr>
-        <td>
-        </td>
-    </tr>
-    
-</table>
-
-{%endblock%}
+<div class="row">
+    <section class="col-12">
+        <a href="/edit-education-exp/{{displayeduexp[0]['id']}}" type="button" class="btn btn-outline-info" style="margin-top: 2em; margin-left: 2em;">Edit</a>
+        <a href="/" type="button" class="btn btn-outline-danger" style="margin-top: 2em; margin-left: 2em;">Delete</a>
+    </section>
+    <section style="background-color: #eaeaea; border-radius: 5px; margin: 1.5em;">
+        <table class='table'>
+            <tr>
+                <td>
+                    <h2>Author's Work Profile:</h2>
+                    <p><u>{{displayeduexp[0]['category']}}</u></p>
+                    <p>{{displayeduexp[0]['level']}}</p>
+                    <p>Salary: SGD {{displayeduexp[0]['salary']}}</p>
+                    <hr>
+                    <h2>Background:</h2>
+                    <p>Education Level: {{displayeduexp[0]['edu_level']}}</p>
+                    <p>Institute Type: {{displayeduexp[0]['institute']}}</p>
+                    <p>My Role: {{displayeduexp[0]['role']}}</p>
+                    <p>Age Range of Student: {{displayeduexp[0]['age_range_listings']}} years old</p>
+                    <p>Related Subject: {{displayeduexp[0]['topic']}}</p>
+                </td>
+                <td>
+                    <h2>My Experience:</h2>
+                    <h5><u>{{displayeduexp[0]['title']}}</u></h5>
+                    <p>{{displayeduexp[0]['date']}}</p>
+                    <p>{{displayeduexp[0]['details']}}</p>
+                </td>
+            </tr>
+        </table>
+    </section>
+</div>
+{%endblock%} 

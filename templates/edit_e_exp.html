@@ -1,0 +1,99 @@
+{%extends 'index.template.html'%}{%block content%}
+<div class='row'>
+    <div class = 'col-4' style="padding: 10px; background-color: #eaeaea">
+       <h2>My Work Profile:</h2>
+        <p><u>{{displayeduexp[0]['category']}}</u></p>
+        <p>{{displayeduexp[0]['level']}}</p>
+        <p>Salary: SGD {{displayeduexp[0]['salary']}}</p>
+        <hr>
+        <h2>Background:</h2>
+        <p>Education Level: {{displayeduexp[0]['edu_level']}}</p>
+        <p>Institute Type: {{displayeduexp[0]['institute']}}</p>
+        <p>My Role: {{displayeduexp[0]['role']}}</p>
+        <p>Age Range of Student: {{displayeduexp[0]['age_range_listings']}} years old</p>
+        <p>Related Subject: {{displayeduexp[0]['topic']}}</p>
+        <hr>
+        <h2>My Experience:</h2>
+        <h5><u>{{displayeduexp[0]['title']}}</u></h5>
+        <p>{{displayeduexp[0]['date']}}</p>
+        <p>{{displayeduexp[0]['details']}}</p> 
+    </div>
+    <form class="col-8" method='POST' style="padding: 10px; margin-top: 1em; margin-bottom: 1em">
+        <div class="form-group">
+            <label for="type">Your Work category:</label>
+            <select class="form-control" name="job_categories">
+            {%for j in job_categories%}
+          <option>{{j["id"]}}. {{j["category"]}}</option>
+            {%endfor%}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="type">Your Job-Level:</label>
+            <select class="form-control" name="job_level">
+            {%for jl in job_levels%}
+          <option>{{jl["id"]}}. {{jl["level"]}}</option>
+            {%endfor%}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Monthly Salary in SGD:</label>
+            <input type="number" class="form-control" name="salary" min="0", max="200000">
+        </div>
+        <div class="form-group">
+            <label for="type">Age Group of the student:</label>
+            <select class="form-control" name="edu_age_range">
+            {%for a in age_ranges%}
+          <option>{{a["id"]}}. {{a["age_range_listings"]}}</option>
+            {%endfor%}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Your Education Role:</label>
+            <select class="form-control" name="edu_role">
+                {%for r in edu_role_select%}
+                <option>{{r['id']}}. {{r['role']}}</option>
+                {%endfor%}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Education Institute Type:</label>
+            <select class="form-control" name="edu_institute">
+                {%for i in edu_institute_select%}
+                <option>{{i['id']}}. {{i['institute']}}</option>
+                {%endfor%}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Education Level:</label>
+            <select class="form-control" name="edu_level">
+                {%for level in edu_level_select%}
+                <option>{{level['id']}}. {{level['edu_level']}}</option>
+                {%endfor%}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Title:</label>
+            <input type="text" class="form-control" name="edu_exp_title">
+        </div>
+        <div class="form-group">
+            <label>Subject:</label>
+            <select class="form-control" name="edu_subject">
+            {%for t in edu_topics%}
+                <option>{{t['id']}}. {{t['topic']}}</option>
+            {%endfor%}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Details:</label>
+            <textarea class="form-control" name="edu_exp_details" rows="15" cols="30"></textarea>
+        </div>
+        <div>
+            <label>Date of Entry:</label>
+            <input class="form-control" type="date" name="date_created">
+        </div></br>
+        <button type="submit" value="create" class="btn btn-primary">Share</button>
+    </form>
+</div>
+
+
+{%endblock%}
