@@ -5,7 +5,8 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <!-- fontawesome cdn -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -46,6 +47,16 @@
 <script>
 /*global $ */
     $(function() {
+    //click color effect to inform user which experience results page they are currently on
+    $("#client-select").click(function(){
+        $("#client-select").css({"background-color": "#1d3461", "color": "white"})
+        $("#edu-select").css({"background-color": "white", "color": "#af5b5b"})
+    })
+    $("#edu-select").click(function(){
+        $("#edu-select").css({"background-color": "#af5b5b", "color": "white"})
+        $("#client-select").css({"background-color": "white", "color": "#1d3461"})
+    })
+    //alert on click function to warn user before deleting an experience record from database
     $(".alert_delete").click(function() {
         alert('This will delete this experience, are you sure?')
     })
