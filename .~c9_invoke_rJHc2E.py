@@ -63,7 +63,6 @@ def homeredirect():
 ## route: user did not choose any job level or job category but selected for all exp
 @app.route('/all-experiences')
 def allexpsearch():
-
     connection = connect()
     cursor = connection.cursor(pymysql.cursors.DictCursor)
     sql="""
@@ -98,43 +97,8 @@ def allexpsearch():
     return render_template('all_exp_unselect.html', all_c_exp_unselect = all_c_exp_unselect, all_e_exp_unselect = all_e_exp_unselect)
 
 ##route: if user uses search by title
-@app.route('/all-experiences', methods=["POST"])
-def titlesearching():
-    title_search = request.form.get("title-search")
-    connection = connect()
-    cursor = connection.cursor(pymysql.cursors.DictCursor)
-    sql="""
-    SELECT * FROM work_exp
-    INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
-    INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
-    INNER JOIN client_exp ON work_exp.id = client_exp.work_fk
-    INNER JOIN gender_list ON client_exp.gender_fk = gender_list.id
-    INNER JOIN client_age ON client_exp.id = client_age.client_age
-    INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
-    WHERE client_exp.title LIKE "{}%"
-    ORDER BY work_exp.job_category ASC
-    """.format(title_search.lower())
-    cursor.execute(sql)
-    all_c_exp_unselect = cursor.fetchall()
-    
-    sql="""
-    SELECT * FROM work_exp
-    INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
-    INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
-    INNER JOIN edu_exp ON work_exp.id = edu_exp.work_fk
-    INNER JOIN edu_age ON edu_exp.id = edu_age.edu_age
-    INNER JOIN age_range_list ON edu_age.age_age = age_range_list.id
-    INNER JOIN edu_role_list ON edu_exp.role_fk = edu_role_list.id
-    INNER JOIN edu_level_list ON edu_exp.level_fk = edu_level_list.id
-    INNER JOIN edu_institute_list ON edu_exp.institute_fk = edu_institute_list.id
-    INNER JOIN topic_list ON edu_exp.topic_fk = topic_list.id
-    WHERE edu_exp.title LIKE "{}%"
-    ORDER BY work_exp.job_category ASC
-    """.format(title_search.lower())
-    cursor.execute(sql)
-    all_e_exp_unselect = cursor.fetchall()
-    return render_template('all_exp_unselect.html', all_c_exp_unselect = all_c_exp_unselect, all_e_exp_unselect = all_e_exp_unselect)
-    
+
+
 ## route: user did not choose any job level but selected a job category and selected for all exp
 @app.route('/all-experiences/any-level/<job_cat_id>')
 def catexpsearch(job_cat_id):
@@ -172,7 +136,6 @@ def catexpsearch(job_cat_id):
     all_e_exp_unselect = cursor.fetchall()
     
     return render_template('all_exp_unselect.html', all_c_exp_unselect = all_c_exp_unselect, all_e_exp_unselect = all_e_exp_unselect)
-
     
 ## route: user did not choose any job category but selected a job level and selected for all exp
 @app.route('/all-experiences/any-category/<job_level_id>')

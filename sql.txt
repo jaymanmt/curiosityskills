@@ -72,3 +72,14 @@ change to URL for instead of href later
 
 @app.route('/delete-task/<task_id>')
 def delete_task(task_id):
+
+
+SELECT * FROM work_exp
+INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
+INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
+INNER JOIN client_exp ON work_exp.id = client_exp.work_fk
+INNER JOIN gender_list ON client_exp.gender_fk = gender_list.id
+INNER JOIN client_age ON client_exp.id = client_age.client_age
+INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
+WHERE client_exp.title LIKE "Convert%"
+ORDER BY work_exp.job_category ASC
