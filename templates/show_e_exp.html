@@ -2,7 +2,30 @@
 <div class="row">
     <section class="col-12">
         <a href="/edit-education-exp/{{displayeduexp[0]['id']}}" type="button" class="btn btn-outline-info" style="margin-top: 2em; margin-left: 2em;">Edit</a>
-        <a href="/delete-education-exp/{{displayeduexp[0]['id']}}" type="button" class="btn btn-outline-danger alert_delete" style="margin-top: 2em; margin-left: 2em;">Delete</a>
+        <a style="margin-top: 2em; margin-left: 2em;" href="#" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModal">
+  Delete
+</a>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                    </div>
+                    <div class="modal-body">
+                        This will delete the entire recorded experience. Would you like to proceed?
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" type="button" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                        <a href="/delete-education-exp/{{displayeduexp[0]['id']}}" type="button" class="btn btn-primary">Yes, I'm sure</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
     <section style="background-color: #eaeaea; border-radius: 5px; margin: 1.5em;">
         <table class='table'>
