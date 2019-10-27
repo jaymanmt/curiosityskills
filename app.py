@@ -350,27 +350,20 @@ def edit_client(c_exp_id):
     WHERE id = {}
     """.format(job_categories[0], job_level[0], salary, c_exp_id)
     cursor.execute(sql)
-    
-    sql="""
-    UPDATE client_exp SET title = "{}", details = "{}", gender_fk= {}
-    WHERE id = {}
-    """.format(title, details, date_format, gender[0], c_exp_id)
-    
-    cursor.execute(sql)
-    
-    sql="""
-    UPDATE client_age SET age_age = "{}"
-    INNER JOIN client_age ON client_exp.id = client_age.client_age
-    INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
-    WHERE client_age.client_age = {}
-    """.format(age_group, c_exp_id)
-    cursor.execute(sql)
-
     connection.commit()
     
+    sql="""
+    UPDATE client_exp SET title = "{}", details = "{}", date= {}, gender_fk= {}
+    WHERE work_fk = {}
+    """.format(title, details, date_format, gender[0], c_exp_id)
+    cursor.execute(sql)
+    connection.commit()
     sql = """
-    INSERT INTO client_age(client_age, age_age) VALUES ({},{})
-    """.format(c_exp_id, age_group[0])
+    UPDATE client_age 
+    INNER JOIN client_exp ON client_exp.id = client_age.client_age
+    SET client_age.age_age = {}
+    WHERE client_exp.work_fk = {}
+    """.format(age_group[0], c_exp_id)
     print(sql)
     cursor.execute(sql)
     
@@ -378,13 +371,7 @@ def edit_client(c_exp_id):
     
     return redirect("/view-c-exp/{}".format(c_exp_id))
     
-    connection = connect()
-    cursor = connection.cursor(pymysql.cursors.DictCursor)
-    sql = """
-    UPDATE client_exp SET details='321' WHERE id = 21
-    
-    """
-    return 'editing'
+
 
 ## route to display form for creating client experience 
 @app.route('/create-client-experience')

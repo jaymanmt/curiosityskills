@@ -39,10 +39,13 @@ INNER JOIN client_exp ON work_exp.id = client_exp.work_fk
 INNER JOIN gender_list ON client_exp.gender_fk = gender_list.id
 INNER JOIN client_age ON client_exp.id = client_age.client_age
 INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
-WHERE work_exp.id = {}
 
 UPDATE client_exp SET details='321' WHERE id = 21
 
-UPDATE age_range_list SET age_range_listings = "{}"
-    INNER JOIN client_age ON client_age.age_age = age_range_list.id
-    WHERE client_age.client_age = 21
+UPDATE client_age SET age_age = 9
+WHERE client_age.client_age = 23
+
+UPDATE client_age 
+INNER JOIN client_exp ON client_exp.id = client_age.client_age
+SET client_age.age_age = 1
+WHERE client_exp.work_fk = 42
