@@ -10,7 +10,9 @@ def connect():
     password=os.environ["MYSQLPW"],
     database="curiosityskills")
     return connection
-#----------------------------------------------- HOME PAGE ------------------------------------------------------#
+    
+#----------------------------------------- SEARCH FUNCTIONALITY + HOMEPAGE --------------------------------------#
+
 ## display home route for basic search
 @app.route('/')
 def home():
@@ -210,6 +212,7 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
             SELECT * FROM work_exp
             INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
             INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
+            ORDER BY work_exp.salary ASC
             """
             cursor.execute(sql)
             salaries = cursor.fetchall()
@@ -222,6 +225,7 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
             INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
             INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
             WHERE job_category = {}
+            ORDER BY work_exp.salary ASC
             """.format(job_cat_id)
             cursor.execute(sql)
             salaries = cursor.fetchall()
@@ -234,6 +238,7 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
             INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
             INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
             WHERE job_level = {}
+            ORDER BY work_exp.salary ASC
             """.format(job_level_id)
             cursor.execute(sql)
             salaries = cursor.fetchall()
@@ -246,6 +251,7 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
             INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
             INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
             WHERE job_category = {} and job_level = {}
+            ORDER BY work_exp.salary ASC
             """.format(job_cat_id, job_level_id)
             cursor.execute(sql)
             salaries = cursor.fetchall()
@@ -690,7 +696,6 @@ def createclientexp():
         """.format(last_id_client_exp, age_group[0:2])
         cursor.execute(sql)
         connection.commit()
-    
     return redirect('/')
     
 ## route to display form for creating education experience 
