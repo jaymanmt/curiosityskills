@@ -38,7 +38,6 @@ def homeredirect():
     experience = request.form.get("experience_type")
     
     ## if statement within if statement to accommodate for double digit id to be passed into database
-
     if experience == 'all_exp' and job_level[0] == '-' and job_category[0] == '-':
         return redirect('/all-experiences')
     elif experience == 'all_exp' and job_category[0] == '-':
@@ -204,7 +203,7 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
 ## search possbilities for user choosing to compare salary - from dropdown, user choose none, job cat only, job level only, or both
     elif exp_type == 'salary':
         ## if statement to accommodate for double digit id to be passed into database
-        if job_level_id == '-' and job_cat_id == '-':
+        if job_level_id[0] == '-' and job_cat_id[0] == '-':
             connection = connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
             sql = """
@@ -215,7 +214,7 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
             cursor.execute(sql)
             salaries = cursor.fetchall()
             return render_template("salary_all.html", salaries = salaries)
-        elif job_level_id == '-':
+        elif job_level_id[0] == '-':
             connection = connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
             sql = """
@@ -227,7 +226,7 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
             cursor.execute(sql)
             salaries = cursor.fetchall()
             return render_template("salary_all.html", salaries = salaries)
-        elif job_cat_id == '-':
+        elif job_cat_id[0] == '-':
             connection = connect()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
             sql = """
