@@ -42,6 +42,7 @@
         <td>
             <p>Client Gender: {{each_exp['gender']}}</p>
             <p>Age Range of Client: {{each_exp['age_range_listings']}} years old</p>
+            <p>Title: {{each_exp['title'][:23]}}...</p>
         </td>
         <td>
             <a href = "/view-c-exp/{{each_exp['id']}}">view</a>
@@ -79,6 +80,7 @@
             <p>My Role: {{each_exp['role']}}</p>
             <p>Age Range of Student: {{each_exp['age_range_listings']}} years old</p>
             <p>Related Subject: {{each_exp['topic']}}</p>
+            <p>Title: {{each_exp['title'][:23]}}...</p>
         </td>
         <td>
             <a href = "/view-e-exp/{{each_exp['id']}}">view</a>

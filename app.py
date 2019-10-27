@@ -11,7 +11,7 @@ def connect():
     database="curiosityskills")
     return connection
     
-#----------------------------------------- SEARCH FUNCTIONALITY + HOMEPAGE --------------------------------------#
+#----------------------------------------- SEARCH FUNCTIONALITIES + HOMEPAGE --------------------------------------#
 
 ## display home route for basic search
 @app.route('/')
