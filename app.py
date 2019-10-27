@@ -73,6 +73,7 @@ def allexpsearch():
     INNER JOIN gender_list ON client_exp.gender_fk = gender_list.id
     INNER JOIN client_age ON client_exp.id = client_age.client_age
     INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
+    ORDER BY work_exp.job_category ASC
     """
     cursor.execute(sql)
     all_c_exp_unselect = cursor.fetchall()
@@ -88,7 +89,7 @@ def allexpsearch():
     INNER JOIN edu_level_list ON edu_exp.level_fk = edu_level_list.id
     INNER JOIN edu_institute_list ON edu_exp.institute_fk = edu_institute_list.id
     INNER JOIN topic_list ON edu_exp.topic_fk = topic_list.id
-    
+    ORDER BY work_exp.job_category ASC
     """
     cursor.execute(sql)
     all_e_exp_unselect = cursor.fetchall()
@@ -109,6 +110,7 @@ def catexpsearch(job_cat_id):
     INNER JOIN client_age ON client_exp.id = client_age.client_age
     INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
     WHERE work_exp.job_category = {}
+    ORDER BY work_exp.job_category ASC
     """.format(job_cat_id)
     cursor.execute(sql)
     all_c_exp_unselect = cursor.fetchall()
@@ -125,6 +127,7 @@ def catexpsearch(job_cat_id):
     INNER JOIN edu_institute_list ON edu_exp.institute_fk = edu_institute_list.id
     INNER JOIN topic_list ON edu_exp.topic_fk = topic_list.id
     WHERE work_exp.job_category = {}
+    ORDER BY work_exp.job_category ASC
     """.format(job_cat_id)
     cursor.execute(sql)
     all_e_exp_unselect = cursor.fetchall()
@@ -145,6 +148,7 @@ def levelexpsearch(job_level_id):
     INNER JOIN client_age ON client_exp.id = client_age.client_age
     INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
     WHERE work_exp.job_level = {}
+    ORDER BY work_exp.job_category ASC
     """.format(job_level_id)
     cursor.execute(sql)
     all_c_exp_unselect = cursor.fetchall()
@@ -161,6 +165,7 @@ def levelexpsearch(job_level_id):
     INNER JOIN edu_institute_list ON edu_exp.institute_fk = edu_institute_list.id
     INNER JOIN topic_list ON edu_exp.topic_fk = topic_list.id
     WHERE work_exp.job_level = {}
+    ORDER BY work_exp.job_category ASC
     """.format(job_level_id)
     cursor.execute(sql)
     all_e_exp_unselect = cursor.fetchall()
@@ -181,6 +186,7 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
         INNER JOIN client_age ON client_exp.id = client_age.client_age
         INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
         WHERE work_exp.job_category = {} and work_exp.job_level = {}
+        ORDER BY work_exp.job_category ASC
         """.format(job_cat_id, job_level_id)
         cursor.execute(sql)
         all_c_exp_unselect = cursor.fetchall()
@@ -197,6 +203,7 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
         INNER JOIN edu_institute_list ON edu_exp.institute_fk = edu_institute_list.id
         INNER JOIN topic_list ON edu_exp.topic_fk = topic_list.id
         WHERE work_exp.job_category = {} and work_exp.job_level = {}
+        ORDER BY work_exp.job_category ASC
         """.format(job_cat_id, job_level_id)
         cursor.execute(sql)
         all_e_exp_unselect = cursor.fetchall()
@@ -212,7 +219,7 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
             SELECT * FROM work_exp
             INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
             INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
-            ORDER BY work_exp.salary ASC
+            ORDER BY work_exp.job_level ASC
             """
             cursor.execute(sql)
             salaries = cursor.fetchall()
