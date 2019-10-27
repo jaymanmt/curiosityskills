@@ -282,6 +282,109 @@ def show_e_exp(e_exp_id):
     cursor.execute(sql)
     displayeduexp = cursor.fetchall()
     return render_template('show_e_exp.html', displayeduexp = displayeduexp)
+    
+## route to display edit client experience template, allow users to see previous entry to make adjustments easier
+@app.route('/edit-client-exp/<c_exp_id>')
+def show_edit_client(c_exp_id):
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    sql="""
+    SELECT * FROM work_exp
+    INNER JOIN job_level_list ON work_exp.job_level = job_level_list.id
+    INNER JOIN job_category_list ON work_exp.job_category = job_category_list.id
+    INNER JOIN client_exp ON work_exp.id = client_exp.work_fk
+    INNER JOIN gender_list ON client_exp.gender_fk = gender_list.id
+    INNER JOIN client_age ON client_exp.id = client_age.client_age
+    INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
+    WHERE work_exp.id = {}
+    """.format(c_exp_id)
+    cursor.execute(sql)
+    displayclientexp = cursor.fetchall()
+    
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    sql="""
+    SELECT * FROM job_category_list
+    """
+    cursor.execute(sql)
+    job_categories = cursor.fetchall()
+    
+    sql="""
+    SELECT * FROM job_level_list
+    """
+    cursor.execute(sql)
+    job_levels = cursor.fetchall()
+    
+    sql= """
+    SELECT * FROM age_range_list
+    """
+    cursor.execute(sql)
+    age_ranges = cursor.fetchall()
+    
+    sql= """
+    SELECT * FROM gender_list
+    """
+    cursor.execute(sql)
+    gender_select = cursor.fetchall()
+    
+    return render_template('edit_c_exp.html', displayclientexp = displayclientexp, job_categories = job_categories, job_levels = job_levels, gender_select = gender_select, age_ranges = age_ranges)
+
+## route to submit form for editing client experience
+@app.route('/edit-client-exp/<c_exp_id>', methods = ['POST'])
+def edit_client(c_exp_id):
+
+    job_categories = request.form.get("job_categories")
+    job_level = request.form.get("job_level")
+    salary = request.form.get("salary")
+    title = request.form.get("client_exp_title")
+    details = request.form.get("client_exp_details")
+    date = request.form.get("date_created")
+    date_format = date.replace("-", "")
+    gender = request.form.get("client_gender")
+    age_group = request.form.get("client_age_range")
+    
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    sql="""
+    UPDATE work_exp SET job_category = {}, job_level= {}, salary = {}
+    WHERE id = {}
+    """.format(job_categories[0], job_level[0], salary, c_exp_id)
+    cursor.execute(sql)
+    
+    sql="""
+    UPDATE client_exp SET title = "{}", details = "{}", gender_fk= {}
+    WHERE id = {}
+    """.format(title, details, date_format, gender[0], c_exp_id)
+    
+    cursor.execute(sql)
+    
+    sql="""
+    UPDATE client_age SET age_age = "{}"
+    INNER JOIN client_age ON client_exp.id = client_age.client_age
+    INNER JOIN age_range_list ON client_age.age_age = age_range_list.id
+    WHERE client_age.client_age = {}
+    """.format(age_group, c_exp_id)
+    cursor.execute(sql)
+
+    connection.commit()
+    
+    sql = """
+    INSERT INTO client_age(client_age, age_age) VALUES ({},{})
+    """.format(c_exp_id, age_group[0])
+    print(sql)
+    cursor.execute(sql)
+    
+    connection.commit()
+    
+    return redirect("/view-c-exp/{}".format(c_exp_id))
+    
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    sql = """
+    UPDATE client_exp SET details='321' WHERE id = 21
+    
+    """
+    return 'editing'
 
 ## route to display form for creating client experience 
 @app.route('/create-client-experience')
@@ -347,16 +450,9 @@ def createclientexp():
 ## insert age separately from the rest due to separate client_exp and edu_exp tables linking to age_range table
     age_group = request.form.get("client_age_range")
     
-    sql="""
-    INSERT INTO age_range_list(age_range_listings) VALUES ("{}")
-    """.format(age_group)
-    cursor.execute(sql)
-    last_id_age_range = cursor.lastrowid
-    connection.commit()
-    
     sql = """
     INSERT INTO client_age(client_age, age_age) VALUES ({},{})
-    """.format(last_id_client_exp, last_id_age_range)
+    """.format(last_id_client_exp, age_group[0])
     print(sql)
     cursor.execute(sql)
     
@@ -452,7 +548,7 @@ def create_eduexp():
     sql = """
     INSERT INTO edu_exp(title, details, date, work_fk, role_fk, level_fk, topic_fk, institute_fk) VALUES ("{}", "{}", {}, {}, {}, {}, {}, {})
     """.format(title, details, date_format, last_id_work, role[0], edulevel[0], subject[0], institute[0])
-    print(sql)
+
     cursor.execute(sql)
     
     last_id_edu = cursor.lastrowid 
@@ -462,15 +558,10 @@ def create_eduexp():
 ## insert age separately from the rest due to separate client_exp and edu_exp tables linking to age_range table
     
     age_group = request.form.get('edu_age_range')
-    sql="""
-    INSERT INTO age_range_list(age_range_listings) VALUES ("{}")
-    """.format(age_group)
-    cursor.execute(sql)
-    last_id_age_range = cursor.lastrowid
     
     sql="""
-    INSERT INTO edu_age(edu_age, age_age) VALUES ({}, {})
-    """.format(last_id_edu, last_id_age_range)
+    INSERT INTO edu_age(edu_age, age_age) VALUES ({},{})
+    """.format(last_id_edu, age_group[0])
     
     cursor.execute(sql)
     connection.commit()

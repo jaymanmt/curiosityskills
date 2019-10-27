@@ -26,7 +26,7 @@
             <label for="type">Age Group of the student:</label>
             <select class="form-control" name="edu_age_range">
             {%for a in age_ranges%}
-          <option>{{a["age_range_listings"]}}</option>
+          <option>{{a["id"]}}. {{a["age_range_listings"]}}</option>
             {%endfor%}
             </select>
         </div>

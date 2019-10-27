@@ -1,6 +1,7 @@
 {%extends 'index.template.html'%}{%block content%}
-
-<table style = "margin:6em;"class = 'table col-10'>
+<a href="/edit-client-exp/{{displayclientexp[0]['id']}}" type="button" class="btn btn-outline-info" style = "margin-top: 2em; margin-left: 2em;">Edit</a>
+<a href = "/" type="button" class="btn btn-outline-danger" style = "margin-top: 2em; margin-left: 2em;">Delete</a>
+<table style = "margin:2em;"class = 'table col-10'>
     <tr>
         <td>
             <h2>Author's Work Profile:</h2>
@@ -22,7 +23,5 @@
         <td>
         </td>
     </tr>
-    
 </table>
-
 {%endblock%}
