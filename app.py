@@ -529,6 +529,11 @@ def edit_e_client(e_exp_id):
 
     return redirect("/view-e-exp/{}".format(e_exp_id))
 
+@app.route('/delete-client-exp/<work_id>')
+def delete_c_exp(work_id):
+    return 'deleted'
+
+
 ## route to display form for creating client experience 
 @app.route('/create-client-experience')
 def showcreateprofile():
@@ -737,7 +742,6 @@ def create_eduexp():
         """.format(last_id_edu, age_group[0:2])
         cursor.execute(sql)
         connection.commit()
-    
     
     return redirect('/')
 

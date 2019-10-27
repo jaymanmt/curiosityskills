@@ -18,3 +18,5 @@ https://www.moe.gov.sg/education/pre-university/gce-a-level-curriculum
 hero image potential candidate:
 https://www.pexels.com/photo/man-holding-white-teacup-in-front-of-gray-laptop-842567/
 
+
+Limitations of using the requested information from the form to be used as the id in the database. If else statements with hard-coded information were used to resolved issues with double digit options in drop down selectables. If options list were to go past 2 digits, a new strategy will be needed to resolve that. 

@@ -49,3 +49,6 @@ UPDATE client_age
 INNER JOIN client_exp ON client_exp.id = client_age.client_age
 SET client_age.age_age = 1
 WHERE client_exp.work_fk = 42
+
+DELETE FROM table1, table2 FROM table1, table2 WHERE table1.id1 =
+  table2.id2 AND condition
