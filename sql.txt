@@ -1,5 +1,3 @@
-71f08h3fnduweyg7
-
 CREATE USER 'admini'@'localhost' IDENTIFIED BY '71f08h3fnduweyg7';  
 
 comments - last inserted ID. or extract latest inserted id then use it in your script to display the latest comments on top. 

@@ -11,7 +11,7 @@ def connect():
     database="curiosityskills")
     return connection
     
-#----------------------------------------- SEARCH FUNCTIONALITIES + HOMEPAGE --------------------------------------#
+#------------------------ SEARCH FUNCTIONALITIES + HOMEPAGE --------------------------------------#
 
 ## display home route for basic search
 @app.route('/')
@@ -306,7 +306,7 @@ def fullsearch(job_cat_id, job_level_id, exp_type):
     else:
         return render_template('oops.html')
 
-#-------------------------------------------- DISPLAY LISTS OF EXPERIENCES ---------------------------------#
+#-------------------------------- DISPLAY LISTS OF EXPERIENCES ---------------------------------#
 
 ##route where user chose to view details of a specific entry in client experiences
 @app.route('/view-c-exp/<c_exp_id>')
@@ -349,7 +349,7 @@ def show_e_exp(e_exp_id):
     displayeduexp = cursor.fetchall()
     return render_template('show_e_exp.html', displayeduexp = displayeduexp)
 
-#-------------------------------------------- SHOW + EDIT INDIVIDUAL EXPERIENCES ---------------------------------#
+#---------------------------- SHOW + EDIT INDIVIDUAL EXPERIENCES ------------------------------#
 
 ## route to display edit client experience template, allow users to see previous entry to make adjustments easier
 @app.route('/edit-client-exp/<c_exp_id>')
@@ -597,7 +597,7 @@ def edit_e_client(e_exp_id):
 
     return redirect("/view-e-exp/{}".format(e_exp_id))
 
-#-------------------------------------------- DELETE INDIVIDUAL EXPERIENCES ---------------------------------#
+#----------------------------- DELETE INDIVIDUAL EXPERIENCES -------------------------------#
 
 ## delete selected client experiences
 @app.route('/delete-client-exp/<work_id>')
