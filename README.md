@@ -1,4 +1,26 @@
-Resoures:
+# Data-Centric Project
+## Curiousity Skills
+
+This website is a database of work and educational experiences for anyone in the communityto search and share, particularly for those living in Singapore. Users are able to upload their experiences during work with clients and colleagues, or their experiences as a student or a teacher. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Resources:
 
 list of job categories for work profile:
 https://www.recruiter.com/careers/
