@@ -1,0 +1,1 @@
+web gunicorn <your python file name without .py>:app
