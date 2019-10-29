@@ -1,14 +1,19 @@
 from flask import Flask, render_template, request, redirect, url_for
 import os
 import pymysql
+import urllib.parse
+from urllib.parse import urlparse
+
+urllib.parse.uses_netloc.append('mysql')
+
 
 app = Flask(__name__)
 
 def connect():
-    connection = pymysql.connect(host="localhost",
-    user="admini",
-    password=os.environ["MYSQLPW"],
-    database="curiosityskills")
+    connection = pymysql.connect(host=os.environ["DB_HOST"],
+    user=os.environ["DB_USER"],
+    password=os.environ["DB_PW"],
+    database=os.environ["DB_NAME"])
     return connection
     
 #------------------------ SEARCH FUNCTIONALITIES + HOMEPAGE --------------------------------------#
