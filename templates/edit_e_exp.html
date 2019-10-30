@@ -23,7 +23,7 @@
             <label for="type">Your Work category:</label>
             <select class="form-control" name="job_categories">
             {%for j in job_categories%}
-          <option value="{{j["id"]}}">{{j["category"]}}</option>
+          <option value="{{j["id"]}}" {%if j['category'] == displayeduexp[0]['category']%} selected="selected" {%endif%}>{{j["category"]}}</option>
             {%endfor%}
             </select>
         </div>
@@ -31,7 +31,7 @@
             <label for="type">Your Job-Level:</label>
             <select class="form-control" name="job_level">
             {%for jl in job_levels%}
-          <option value="{{jl["id"]}}">{{jl["level"]}}</option>
+          <option value="{{jl["id"]}}" {%if jl['level'] == displayeduexp[0]['level']%} selected="selected" {%endif%}>{{jl["level"]}}</option>
             {%endfor%}
             </select>
         </div>
@@ -43,7 +43,7 @@
             <label for="type">Student/Teacher Age Range:</label>
             <select class="form-control" name="edu_age_range">
             {%for a in age_ranges%}
-          <option value="{{a["id"]}}">{{a["age_range_listings"]}}</option>
+          <option value="{{a["id"]}}" {%if a['age_range_listings'] == displayeduexp[0]['age_range_listings']%} selected="selected" {%endif%}>{{a["age_range_listings"]}}</option>
             {%endfor%}
             </select>
         </div>
@@ -51,7 +51,7 @@
             <label>Your Education Role:</label>
             <select class="form-control" name="edu_role">
                 {%for r in edu_role_select%}
-                <option value="{{r['id']}}">{{r['role']}}</option>
+                <option value="{{r['id']}}" {%if r['role'] == displayeduexp[0]['role']%} selected="selected" {%endif%}>{{r['role']}}</option>
                 {%endfor%}
             </select>
         </div>
@@ -59,7 +59,7 @@
             <label>Education Institute Type:</label>
             <select class="form-control" name="edu_institute">
                 {%for i in edu_institute_select%}
-                <option value="{{i['id']}}">{{i['institute']}}</option>
+                <option value="{{i['id']}}" {%if i['institute'] == displayeduexp[0]['institute']%} selected="selected" {%endif%}>{{i['institute']}}</option>
                 {%endfor%}
             </select>
         </div>
@@ -79,7 +79,7 @@
             <label>Subject:</label>
             <select class="form-control" name="edu_subject">
             {%for t in edu_topics%}
-                <option value = "{{t['id']}}">{{t['topic']}}</option>
+                <option value = "{{t['id']}}" {%if t['topic'] == displayeduexp[0]['topic']%} selected="selected" {%endif%}>{{t['topic']}}</option>
             {%endfor%}
             </select>
         </div>

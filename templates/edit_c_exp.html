@@ -20,7 +20,7 @@
             <label for="type">Your Work category:</label>
             <select class="form-control" name="job_categories">
             {%for j in job_categories%}
-          <option value="{{j["id"]}}">{{j["category"]}}</option>
+          <option value="{{j["id"]}}" {%if j['category'] == displayclientexp[0]['category']%} selected="selected" {%endif%}>{{j["category"]}}</option>
             {%endfor%}
             </select>
         </div>
@@ -28,7 +28,7 @@
             <label for="type">Your Job-Level:</label>
             <select class="form-control" name="job_level">
             {%for jl in job_levels%}
-          <option value="{{jl["id"]}}">{{jl["level"]}}</option>
+          <option value="{{jl["id"]}}" {%if jl['level'] == displayclientexp[0]['level']%} selected="selected" {%endif%}>{{jl["level"]}}</option>
             {%endfor%}
             </select>
         </div>
@@ -40,7 +40,7 @@
             <label for="type">Client/Colleague Age Range:</label>
             <select class="form-control" name="client_age_range">
             {%for a in age_ranges%}
-          <option value="{{a["id"]}}">{{a["age_range_listings"]}}</option>
+          <option value="{{a["id"]}}" {%if a['age_range_listings'] == displayclientexp[0]['age_range_listings']%} selected="selected" {%endif%}>{{a["age_range_listings"]}}</option>
             {%endfor%}
             </select>
         </div>
