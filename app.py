@@ -41,29 +41,19 @@ def home():
 @app.route('/', methods = ['POST'])
 def homeredirect():
     job_level = request.form.get("level")
+    print(job_level)
     job_category = request.form.get("job_categories")
+    print(job_category)
     experience = request.form.get("experience_type")
     
-    ## if statement within if statement to accommodate for double digit id to be passed into database
     if experience == 'all_exp' and job_level[0] == '-' and job_category[0] == '-':
         return redirect('/all-experiences')
     elif experience == 'all_exp' and job_category[0] == '-':
-        if job_level[1] == ".":
-            return redirect('/all-experiences/{}/{}'.format('any-category', job_level[0]))
-        else:
-            return redirect('/all-experiences/{}/{}'.format('any-category', job_level[0:2]))
+        return redirect('/all-experiences/{}/{}'.format('any-category', job_level))
     elif experience == 'all_exp' and job_level[0] == '-':
-        if job_category[1] == ".":
-            return redirect('/all-experiences/{}/{}'.format('any-level', job_category[0]))
-        else:
-            return redirect('/all-experiences/{}/{}'.format('any-level', job_category[0:2]))
+        return redirect('/all-experiences/{}/{}'.format('any-level', job_category))
     else:
-        if job_category[1] == "." and job_level[1] == ".":
-            return redirect("/{}/{}/{}".format(job_category[0], job_level[0], experience))
-        elif job_category[1] == ".":
-            return redirect("/{}/{}/{}".format(job_category[0], job_level[0:2], experience))
-        else:
-            return redirect("/{}/{}/{}".format(job_category[0:2], job_level[0], experience))
+        return redirect("/{}/{}/{}".format(job_category, job_level, experience))
 
 ## route: user did not choose any job level or job category but selected for all exp
 @app.route('/all-experiences')
@@ -415,51 +405,31 @@ def edit_c_client(c_exp_id):
     date_format = date.replace("-", "")
     gender = request.form.get("client_gender")
     age_group = request.form.get("client_age_range")
-    ## if statement to accommodate for double digit id to be passed into database
-    if job_categories[1] == ".":
-        connection = connect()
-        cursor = connection.cursor(pymysql.cursors.DictCursor)
-        sql="""
-        UPDATE work_exp SET job_category = {}, job_level= {}, salary = {}
-        WHERE id = {}
-        """.format(job_categories[0], job_level[0], salary, c_exp_id)
-        cursor.execute(sql)
-        connection.commit()
-    else:
-        connection = connect()
-        cursor = connection.cursor(pymysql.cursors.DictCursor)
-        sql="""
-        UPDATE work_exp SET job_category = {}, job_level= {}, salary = {}
-        WHERE id = {}
-        """.format(job_categories[0:2], job_level[0], salary, c_exp_id)
-        cursor.execute(sql)
-        connection.commit()
+
+    connection = connect()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
+    sql="""
+    UPDATE work_exp SET job_category = {}, job_level= {}, salary = {}
+    WHERE id = {}
+    """.format(job_categories, job_level, salary, c_exp_id)
+    cursor.execute(sql)
+    connection.commit()
     
     sql="""
     UPDATE client_exp SET title = "{}", details = "{}", date= {}, gender_fk= {}
     WHERE work_fk = {}
-    """.format(title, details, date_format, gender[0], c_exp_id)
+    """.format(title, details, date_format, gender, c_exp_id)
     cursor.execute(sql)
     connection.commit()
-
-    if age_group[1] == ".":
-        sql = """
-        UPDATE client_age 
-        INNER JOIN client_exp ON client_exp.id = client_age.client_age
-        SET client_age.age_age = {}
-        WHERE client_exp.work_fk = {}
-        """.format(age_group[0], c_exp_id)
-        cursor.execute(sql)
-        connection.commit()
-    else:
-        sql = """
-        UPDATE client_age 
-        INNER JOIN client_exp ON client_exp.id = client_age.client_age
-        SET client_age.age_age = {}
-        WHERE client_exp.work_fk = {}
-        """.format(age_group[0:2], c_exp_id)
-        cursor.execute(sql)
-        connection.commit()
+    
+    sql = """
+    UPDATE client_age 
+    INNER JOIN client_exp ON client_exp.id = client_age.client_age
+    SET client_age.age_age = {}
+    WHERE client_exp.work_fk = {}
+    """.format(age_group, c_exp_id)
+    cursor.execute(sql)
+    connection.commit()
 
     return redirect("/view-c-exp/{}".format(c_exp_id))
 
@@ -550,55 +520,28 @@ def edit_e_client(e_exp_id):
     connection = connect()
     cursor = connection.cursor(pymysql.cursors.DictCursor)
 
-    ## if statement to accommodate for double digit id to be passed into database
-    if job_categories[1] == ".":
-        sql="""
-        UPDATE work_exp SET job_category = {}, job_level= {}, salary = {}
-        WHERE id = {}
-        """.format(job_categories[0], job_level[0], salary, e_exp_id)
-        cursor.execute(sql)
-        connection.commit()
-    else: 
-        sql="""
-        UPDATE work_exp SET job_category = {}, job_level= {}, salary = {}
-        WHERE id = {}
-        """.format(job_categories[0:2], job_level[0], salary, e_exp_id)
-        cursor.execute(sql)
-        connection.commit()
+    sql="""
+    UPDATE work_exp SET job_category = {}, job_level= {}, salary = {}
+    WHERE id = {}
+    """.format(job_categories, job_level, salary, e_exp_id)
+    cursor.execute(sql)
+    connection.commit()
     
+    sql="""
+    UPDATE edu_exp SET title = "{}", details = "{}", date= {}, role_fk = {}, level_fk = {}, topic_fk = {}, institute_fk = {}
+    WHERE work_fk = {}
+    """.format(title, details, date_format, role, edulevel, subject, institute, e_exp_id)
+    cursor.execute(sql)
+    connection.commit()
 
-    if subject[1] == ".":
-        sql="""
-        UPDATE edu_exp SET title = "{}", details = "{}", date= {}, role_fk = {}, level_fk = {}, topic_fk = {}, institute_fk = {}
-        WHERE work_fk = {}
-        """.format(title, details, date_format, role[0], edulevel[0], subject[0], institute[0], e_exp_id)
-        cursor.execute(sql)
-        connection.commit()
-    else:
-        sql="""
-        UPDATE edu_exp SET title = "{}", details = "{}", date= {}, role_fk = {}, level_fk = {}, topic_fk = {}, institute_fk = {}
-        WHERE work_fk = {}
-        """.format(title, details, date_format, role[0], edulevel[0], subject[0:2], institute[0], e_exp_id)
-        cursor.execute(sql)
-        connection.commit()
-    if age_group[1] == ".":
-        sql = """
-        UPDATE edu_age 
-        INNER JOIN edu_exp ON edu_exp.id = edu_age.edu_age
-        SET edu_age.age_age = {}
-        WHERE edu_exp.work_fk = {}
-        """.format(age_group[0], e_exp_id)
-        cursor.execute(sql)
-        connection.commit()
-    else:
-        sql = """
-        UPDATE edu_age 
-        INNER JOIN edu_exp ON edu_exp.id = edu_age.edu_age
-        SET edu_age.age_age = {}
-        WHERE edu_exp.work_fk = {}
-        """.format(age_group[0:2], e_exp_id)
-        cursor.execute(sql)
-        connection.commit()
+    sql = """
+    UPDATE edu_age 
+    INNER JOIN edu_exp ON edu_exp.id = edu_age.edu_age
+    SET edu_age.age_age = {}
+    WHERE edu_exp.work_fk = {}
+    """.format(age_group[0], e_exp_id)
+    cursor.execute(sql)
+    connection.commit()
 
     return redirect("/view-e-exp/{}".format(e_exp_id))
 
@@ -707,19 +650,11 @@ def createclientexp():
     connection = connect()
     cursor = connection.cursor(pymysql.cursors.DictCursor)
     
-    ## if statement to accommodate for double digit id to be passed into database
-    if job_categories[1] == ".":
-        sql="""
-        INSERT INTO work_exp (job_category, job_level, salary) VALUES ({},{},{})
-        """.format(job_categories[0], job_level[0], salary)
-        cursor.execute(sql)
-        last_id_work = cursor.lastrowid 
-    else:
-        sql="""
-        INSERT INTO work_exp (job_category, job_level, salary) VALUES ({},{},{})
-        """.format(job_categories[0:2], job_level[0], salary)
-        cursor.execute(sql)
-        last_id_work = cursor.lastrowid 
+    sql="""
+    INSERT INTO work_exp (job_category, job_level, salary) VALUES ({},{},{})
+    """.format(job_categories, job_level, salary)
+    cursor.execute(sql)
+    last_id_work = cursor.lastrowid 
     
     title = request.form.get("client_exp_title")
     details = request.form.get("client_exp_details")
@@ -736,18 +671,12 @@ def createclientexp():
 ## insert age separately from the rest due to separate client_exp and edu_exp tables linking to age_range table
     age_group = request.form.get("client_age_range")
     
-    if age_group[1] == ".":
-        sql = """
-        INSERT INTO client_age(client_age, age_age) VALUES ({},{})
-        """.format(last_id_client_exp, age_group[0])
-        cursor.execute(sql)
-        connection.commit()
-    else:
-        sql = """
-        INSERT INTO client_age(client_age, age_age) VALUES ({},{})
-        """.format(last_id_client_exp, age_group[0:2])
-        cursor.execute(sql)
-        connection.commit()
+    sql = """
+    INSERT INTO client_age(client_age, age_age) VALUES ({},{})
+    """.format(last_id_client_exp, age_group)
+    cursor.execute(sql)
+    connection.commit()
+
     return redirect('/')
     
 ## route to display form for creating education experience 
@@ -814,21 +743,12 @@ def create_eduexp():
     connection = connect()
     cursor = connection.cursor(pymysql.cursors.DictCursor)
     
-    ## if statement to accommodate for double digit id to be passed into database
-    if job_categories[1] == ".":
-        sql="""
-        INSERT INTO work_exp (job_category, job_level, salary) VALUES ({},{},{})
-        """.format(job_categories[0], job_level[0], salary)
-        cursor.execute(sql)
-        last_id_work = cursor.lastrowid 
-        connection.commit()
-    else:
-        sql="""
-        INSERT INTO work_exp (job_category, job_level, salary) VALUES ({},{},{})
-        """.format(job_categories[0:2], job_level[0], salary)
-        cursor.execute(sql)
-        last_id_work = cursor.lastrowid 
-        connection.commit()
+    sql="""
+    INSERT INTO work_exp (job_category, job_level, salary) VALUES ({},{},{})
+    """.format(job_categories, job_level, salary)
+    cursor.execute(sql)
+    last_id_work = cursor.lastrowid 
+    connection.commit()
     
 ## insert into rest of edu_exp table
     title = request.form.get("edu_exp_title")
@@ -840,37 +760,22 @@ def create_eduexp():
     edulevel = request.form.get('edu_level')
     subject = request.form.get('edu_subject')
     
-    if subject[1] == ".":
-        sql = """
-        INSERT INTO edu_exp(title, details, date, work_fk, role_fk, level_fk, topic_fk, institute_fk) VALUES ("{}", "{}", {}, {}, {}, {}, {}, {})
-        """.format(title, details, date_format, last_id_work, role[0], edulevel[0], subject[0], institute[0])
-        cursor.execute(sql)
-        last_id_edu = cursor.lastrowid 
-        connection.commit()
-    else:
-        sql = """
-        INSERT INTO edu_exp(title, details, date, work_fk, role_fk, level_fk, topic_fk, institute_fk) VALUES ("{}", "{}", {}, {}, {}, {}, {}, {})
-        """.format(title, details, date_format, last_id_work, role[0], edulevel[0], subject[0:2], institute[0])
-        cursor.execute(sql)
-        last_id_edu = cursor.lastrowid 
-        connection.commit()
+    sql = """
+    INSERT INTO edu_exp(title, details, date, work_fk, role_fk, level_fk, topic_fk, institute_fk) VALUES ("{}", "{}", {}, {}, {}, {}, {}, {})
+    """.format(title, details, date_format, last_id_work, role, edulevel, subject, institute)
+    cursor.execute(sql)
+    last_id_edu = cursor.lastrowid 
+    connection.commit()
     
 ## insert age separately from the rest due to separate client_exp and edu_exp tables linking to age_range table
     
     age_group = request.form.get('edu_age_range')
-    
-    if age_group[1] ==".":
-        sql="""
-        INSERT INTO edu_age(edu_age, age_age) VALUES ({},{})
-        """.format(last_id_edu, age_group[0])
-        cursor.execute(sql)
-        connection.commit()
-    else:
-        sql="""
-        INSERT INTO edu_age(edu_age, age_age) VALUES ({},{})
-        """.format(last_id_edu, age_group[0:2])
-        cursor.execute(sql)
-        connection.commit()
+
+    sql="""
+    INSERT INTO edu_age(edu_age, age_age) VALUES ({},{})
+    """.format(last_id_edu, age_group)
+    cursor.execute(sql)
+    connection.commit()
     
     return redirect('/')
 

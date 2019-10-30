@@ -14,7 +14,7 @@
         <select class="form-control" name="job_categories">
             <option>-Any-</option>
         {%for j in job_categories%}
-      <option>{{j["id"]}}. {{j['category']}}</option>
+      <option value="{{j["id"]}}">{{j['category']}}</option>
         {%endfor%}
         </select>
     </div>
@@ -22,7 +22,7 @@
         <select class="form-control" name="level">
             <option>-Any-</option>
         {%for jl in job_levels%}
-      <option>{{jl["id"]}}. {{jl['level']}}</option>
+      <option value="{{jl["id"]}}">{{jl['level']}}</option>
         {%endfor%}
         </select>
     </div>

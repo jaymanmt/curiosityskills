@@ -145,7 +145,6 @@ Search functionality is tested for every job category with every job level, test
 
 #### Issues
 - using hardcoded methods to retrieve id number of the dropdown options obtained from database. 
-- this is followed by If else statements with hard-coded information such as "." and index numbers were used to resolved issues with double digit options in drop down selectables. If options list were to go past 2 digits, a new strategy will be needed to resolve this. 
 - using hardcoded methods to retrieved "-Any-" option in dropdowns. 
 - using multiple if else statements to optimise search engine filtering. Not very efficient, may have to look into Object Oriented Programming to clean up the code at a later stage. 
 
