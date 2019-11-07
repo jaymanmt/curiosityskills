@@ -4,7 +4,7 @@
 <section class = "row" style = "display: flex; flex-direction: row; justify-content: center; font-size: 2em;">
     <ul style="list-style: none; display: flex; flex-direction: row; ">
         <li class = 'page-item' style="margin: 5px">
-            <a id = "client-select" style= "border: #1d3461 2px solid; border-radius: 5px; color: #1d3461; box-shadow: 2px 2px 5px #1d3461;" data-dest="page-one" class = 'page-link' href="#">Client Experiences</a>
+            <a id = "client-select" style= "border: #1d3461 2px solid; border-radius: 5px; color: #1d3461; box-shadow: 2px 2px 5px #1d3461;" data-dest="page-one" class = 'page-link' href="#">Work Experiences</a>
         </li> 
         <li class = 'page-item' style="margin: 5px;">
             <a id="edu-select" style= "border: #af5b5b 2px solid; border-radius: 5px; color: #af5b5b; box-shadow: 2px 2px 5px #af5b5b;" data-dest="page-two" class = 'page-link' href="#">Education Experiences</a>
@@ -14,7 +14,7 @@
 <sectionclass = "row">
     <form method = "POST" action="/all-experiences">
         <input type="text" style="margin-bottom:1em;"name="title-search" placeholder="search all by title"/>
-        <input type="submit" name="send-title" value="Search"/>
+        <input class="btn btn-secondary mb-1" style="font-size:0.8em;"type="submit" name="send-title" value="Search"/>
     </form>
 </section>
 
